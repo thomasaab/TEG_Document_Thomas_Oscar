@@ -54,9 +54,11 @@
 \section{Alcance}
 
 
-\par En la actualidad, las organizaciones, sin importar su tamaño, requieren probar la fiabilidad de su entorno de cómputo híbrido en sus operaciones de desarrollo, para asegurar un servicio estable y confiable. Este proyecto propone estudiar la respuesta de un cluster de Kubernetes a fallas controladas en recursos de red, procesamiento y almacenamiento. El estudio está dirigido a aquellas organizaciones que deseen implementar experimentos de inyección de fallas en la nube híbrida, utilizando herramientas que pueden ser obtenidas con facilidad y a su vez probar la capacidad de sus servicios, en caso de eventos indeseables a lo largo de su desarrollo. \\
+\par En la actualidad, las organizaciones, sin importar su tamaño, requieren probar la fiabilidad de su entorno de cómputo híbrido en sus operaciones de desarrollo, para asegurar un servicio estable y confiable. Este proyecto propone estudiar la respuesta de un cluster de Kubernetes a fallas controladas en recursos de red, procesamiento y almacenamiento. Especificamente se consider\'o la inyecci\'on de las siguientes fallas: i) estr\'es por CPU; ii) estr\'es por latencia; iii) estr\'es por memoria RAM y iv) estr\'es por disco; y se evaluo el efecto de cada una de ellas por separado en un entorno de Kuberenetes con deployments de dos replicas. Estas son las fallas que comunmente pueden afectar la calidad de servicio en sistemas desplegados en una red, o mas a\'un, en la internet, donde m\'ultiples usuarios intentan acceder a un recurso, aumentando la carga del sistema, y as\'i el uso de los recursos. Se realiza con dos replicas para estudiar el comportamiento de Kubernetes en el caso de poseer un pod ``sano'' y uno ``enfermo'' y en el caso de que ambas replicas se encuentran afectadas. \\ %(insertar justificacion de pq esas fallas y porque dos replicas nada mas). \\  
 
-\par A su vez en el estudio se plantearan ciertas incógnitas sobre como se comporta Kubernetes ante ciertas fallas y se buscara responderlas.
+\par El estudio está dirigido a aquellas organizaciones que deseen implementar experimentos de inyección de fallas en la nube híbrida, utilizando herramientas que pueden ser obtenidas con facilidad y a su vez probar la capacidad de sus servicios, en caso de eventos indeseables a lo largo de su desarrollo. \\
+
+% \par A su vez en el estudio se plantearan ciertas incógnitas sobre como se comporta Kubernetes ante ciertas fallas y se buscara responderlas.
 
 %%%%%%%%%%%
 \section{Arquitectura Propuesta}
@@ -83,7 +85,7 @@ una (1) instancia EC2 de AWS (Amazon Web Services) debido a que se posee conocim
 \end{itemize}
 %%%%%%%%%%%
 
-\section{Implementación}
+\section{Desarrollo de un sistema de inyecci\'on de fallas dirigido a Kubernetes}
 
 \par Para la implementación del entorno y de los test de inyección de fallas, fue necesario realizar las actividades que se expondrán a continuación, que a su vez fueron divididas en subtareas, conforme a lo requerido al marco metodológico Kanban para poder diseñar y desarrollar dichos test. Algunas macro actividades derivan de los objetivos propuestos anteriormente en este capitulo y consistieron en:
 
@@ -241,7 +243,7 @@ una (1) instancia EC2 de AWS (Amazon Web Services) debido a que se posee conocim
 \par Para el desarrollo de los test de inyección de fallas basadas en colecciones y roles de Ansible, sobre un cluster de Kubernetes de un solo nodo se elaboraron los artefactos de casos de uso expuestos a continuación:\\
 
 
-\textbf{Diagrama de Casos de Uso}\\
+\par \textbf{Diagrama de Casos de Uso}\\
 
 
 \par En la figura \ref{fig:uc01} se muestran los casos de uso identificados para el proyecto, con sus respectivas especificaciones:
@@ -254,7 +256,7 @@ una (1) instancia EC2 de AWS (Amazon Web Services) debido a que se posee conocim
 
 \begin{figure}[htpb!]
 	\centering
-	\includegraphics[width=0.795\columnwidth]{images/usecase/ucfaultinjectionF.png}
+	\includegraphics[width=0.43\columnwidth]{images/usecase/ucfaultinjectionF.png}
 	\caption{Diagarama de Casos de Uso (UC) para los módulos de inyección de fallas en Ansible.}
 	\label{fig:uc01}
 \end{figure}
@@ -314,12 +316,12 @@ una (1) instancia EC2 de AWS (Amazon Web Services) debido a que se posee conocim
 \rowcolor[HTML]{38FFF8} 
 \textbf{UCN-1} & \multicolumn{3}{l|}{\cellcolor[HTML]{38FFF8}\textbf{Sobrecargar CPU del Pod}} \\ \hline
 Dependencias & \multicolumn{3}{l|}{Ninguna.} \\ \hline
-Precondición & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario posee un ambiente de \\ kubernetes con un nodo de ansible \\ para ejecutar pruebas.\end{tabular}} \\ \hline
-Descripción & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El módulo deberá comportarse como \\ se describe en el siguiente caso de uso \\ cuando el usuario desee sobrecargar el CPU \\ de uno o varios Pods.\end{tabular}} \\ \hline
+Precondición & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario posee un ambiente de kubernetes con un nodo de ansible \\ para ejecutar pruebas.\end{tabular}} \\ \hline
+Descripción & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El módulo deberá comportarse como  se describe en el \\ siguiente caso de uso  cuando el usuario desee \\ sobrecargar el CPU  de uno o varios Pods.\end{tabular}} \\ \hline
 Secuencia normal & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
  & 1 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario inicia la ejecución del \\ módulo a través de ansible por consola.\end{tabular}} \\ \hline
  & 2 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario ejecuta el comando para sobrecargar \\ el CPU de un pod con los parámetros necesarios \\ como el namespace del pod, el nombre de un pod \\ específico a sobrecargar o si desea sobrecargar varios\\  pods aleatoriamente, la cantidad de estos además de \\ la duración del experimento y la dirección\\ de red del ambiente de Kubernetes.\end{tabular}} \\ \hline
- & 3 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El módulo sobrecarga el CPU del pod \\ seleccionado o sobrecarga el cpu de la \\ cantidad de pods requerida de manera \\ aleatoria, siguiendo una distribución poisson \\ por un periodo de tiempo que define $\lambda$  = 10.\end{tabular}} \\ \hline
+  & 3 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El módulo sobrecarga el CPU del pod \\ seleccionado o sobrecarga el cpu de la \\ cantidad de pods requerida de manera \\ aleatoria, siguiendo una distribución poisson \\ por un periodo de tiempo que define $\lambda$  = 10.\end{tabular}} \\ \hline
  & 4 & \multicolumn{2}{l|}{Se ejecuta el módulo de inyección de forma esperada.} \\ \hline
 Postcondición & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario observa cuáles pods \\ fueron sometidos al módulo de \\ sobrecarga de CPU.\end{tabular}} \\ \hline
 Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
@@ -327,29 +329,14 @@ Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
  &  & E.1 & \begin{tabular}[c]{@{}l@{}}La ejecución del comando indica por \\ consola la falla del parámetro erróneo.\end{tabular} \\ \hline
  &  & E.2 & El modulo finaliza su ejecución. \\ \hline
  &  & E.3 & Se cancela el caso de uso. \\ \hline
- %& \multicolumn{3}{l|}{} \\
-\end{tabular}%
-}
-\end{table}
-
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-
-\begin{table}[htpb!]
-\tiny
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|l|}
-\hline
-\rowcolor[HTML]{38FFF8} 
-\textbf{UCN-1} & \multicolumn{3}{l|}{\cellcolor[HTML]{38FFF8}\textbf{Sobrecargar CPU del Pod}} \\ \hline
-Comentarios & \multicolumn{3}{l|}{{\begin{tabular}[c]{@{}l@{}}Los parámetros necesarios para la \\ ejecución son el nombre del namespace, \\ el nombre del pod a sobrecargar  o “random poisson” \\ (para sobrecargar pods aleatoriamente), la cantidad de \\ pods a sobrecargar (debe ser mayor o igual a 0 para \\ sobrecarga aleatoria e igual a 1 para un pod específico), \\ la duración de ejecución del módulo (experimento) y \\ la ubicación del intérprete de python para ansible (la cual en \\ Linux por defecto es /usr/bin/python3).\end{tabular}}} \\ \hline
+ Comentarios & \multicolumn{3}{l|}{{\begin{tabular}[c]{@{}l@{}}Los parámetros necesarios para la  ejecución son el nombre del \\ namespace, el nombre del pod a sobrecargar  o “random poisson” \\ (para sobrecargar pods aleatoriamente), la cantidad de pods \\ a sobrecargar (debe ser mayor o igual a 0 para sobrecarga aleatoria \\ e igual a 1 para un pod específico), la duración de ejecución del módulo \\ (experimento) y la ubicación del intérprete de python para ansible \\ (la cual en Linux por defecto es /usr/bin/python3).\end{tabular}}} \\ \hline
 \end{tabular}%
 }
 \caption{Especificación de UCN-1.}
 \label{tab:UCN1}
 \end{table}
+
+
 
 \vspace{\baselineskip}
 \par\textbf{UCN-2 Saturar Disco del Pod:}
@@ -371,22 +358,6 @@ Secuencia normal & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
  & 3 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El modulo satura la memoria de disco del pod específico, \\ realizando operaciones de lectura/escritura durante el \\ periodo de tiempo.\end{tabular}} \\ \hline
  & 4 & \multicolumn{2}{l|}{Se ejecuta el módulo de inyección de forma esperada.} \\ \hline
 Postcondición & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario observa el incremento en el uso \\ del disco de los pods ocasionado por el módulo \\ de saturar disco.\end{tabular}} \\ \hline
-\end{tabular}%
-}
-\end{table}
-
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-
-\begin{table}[htpb!]
-\tiny
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|l|}
-\hline
-\rowcolor[HTML]{38FFF8} 
-\textbf{UCN-2} & \multicolumn{3}{l|}{\cellcolor[HTML]{38FFF8}\textbf{Saturar Disco del Pod}} \\ \hline
 Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
  & 2 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}Si el usuario introduce algún parámetro de \\ forma errónea.\end{tabular}} \\ \hline
  &  & E.1 & \begin{tabular}[c]{@{}l@{}}La ejecución del comando indica por consola \\ la falla del parámetro erróneo.\end{tabular} \\ \hline
@@ -398,6 +369,7 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
 \caption{Especificación de UCN-2.}
 \label{tab:UCN2}
 \end{table}
+
 
 \vspace{\baselineskip}
 \par\textbf{UCN-3 Introducir latencia en Pod:}
@@ -418,20 +390,7 @@ Secuencia normal & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
  & 2 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario ejecuta el comando para introducir latencia \\ en la interfaz de red de un pod con los parámetros\\  necesarios como el namespace del pod, el nombre de \\ un pod específico a ser sometido al incremento de latencia, \\ que también es introducido por el usuario, o si desea afectar \\ varios pods aleatoriamente, la cantidad de estos, además de \\ la duración del experimento y la dirección\\ de red del ambiente de Kubernetes.\end{tabular}} \\ \hline
   & 3 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El módulo induce latencia en la interfaz \\ de comunicación de pods través de comandos.\end{tabular}} \\ \hline
  & 4 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}Se ejecuta el módulo de inyección de \\ forma esperada.\end{tabular}} \\ \hline
-\end{tabular}%
-}
-\end{table}
-
-\begin{table}[htpb!]
-\tiny
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|l|}
-\hline
-\rowcolor[HTML]{38FFF8} 
-\textbf{UCN-3} & \multicolumn{3}{l|}{\cellcolor[HTML]{38FFF8}\textbf{Introducir Latencia en Pod}} \\
-\hline
-Postcondición & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario observa la respuesta de la aplicación \\ de los pods a otras aplicaciones que fue ocasionada\\  por el módulo que introduce latencia en la interfaz \\ de red de los pods.\end{tabular}} \\ \hline
+ Postcondición & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario observa la respuesta de la aplicación \\ de los pods a otras aplicaciones que fue ocasionada\\  por el módulo que introduce latencia en la interfaz \\ de red de los pods.\end{tabular}} \\ \hline
 Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
  & 2 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}Si el usuario introduce algún parámetro de \\ forma errónea.\end{tabular}} \\ \hline
  &  & E.1 & \begin{tabular}[c]{@{}l@{}}La ejecución del comando indica por consola \\ la falla del parámetro erróneo.\end{tabular} \\ \hline
@@ -461,21 +420,7 @@ Descripción & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El módulo deberá
 Secuencia normal & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
  & 1 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario inicia la ejecución del módulo a través \\ de ansible por consola.\end{tabular}} \\ \hline
  & 2 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario ejecuta el comando para sobrecargar la \\ memoria de un pod con los parámetros necesarios como \\ el namespace del pod, el nombre de un pod específico a \\ sobrecargar o si desea sobrecargar varios pods aleatoriamente, \\  la cantidad de estos, además de la duración del experimento\\ y la dirección de red del ambiente de Kubernetes.\end{tabular}} \\ \hline
-\end{tabular}%
-}
-
-\end{table}
-
-\begin{table}[htpb!]
-\tiny
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|l|}
-\hline
-\rowcolor[HTML]{38FFF8} 
-\textbf{UCN-4} & \multicolumn{3}{l|}{\cellcolor[HTML]{38FFF8}\textbf{Sobrecargar Memoria del Pod}} \\ \hline
-Secuencia normal & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
- & 3 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El módulo sobrecarga la memoria del pod seleccionado \\ o sobrecarga la memoria de la cantidad de pods requerida \\ de manera aleatoria, siguiendo una distribución poisson por \\ un periodo de tiempo que define $\lambda$  = 10.\end{tabular}} \\ \hline
+  & 3 & \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}El módulo sobrecarga la memoria del pod seleccionado \\ o sobrecarga la memoria de la cantidad de pods requerida \\ de manera aleatoria, siguiendo una distribución poisson por \\ un periodo de tiempo que define $\lambda$  = 10.\end{tabular}} \\ \hline
  & 4 & \multicolumn{2}{l|}{Se ejecuta el módulo de inyección de forma esperada.} \\ \hline
 Postcondición & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}El usuario observa cuales pods fueron sometidos \\ al módulo de sobrecarga de memoria.\end{tabular}} \\ \hline
 Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
@@ -493,15 +438,26 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
 
 
 \subsection{Desarrollo de test de inyección}
- %\subsubsection{Despliegue pystol}
+
+\subsubsection{Integraci\'on de la herramienta Pystol}
+\par Pystol es una herramienta open source creada para demostrar la correlación entre la ejecución de una acción de inyección de fallas y el cambio en el comportamiento del clúster basado en Kubernetes. Se us\'o como base los test de esta herramienta tenia implementados, para el diseño y desarrollo de los test de este trabajo especial. Las pruebas de inyecci\'on de fallas desarrolladas puedan ser intregradas usando Ansible, tambien esta pruebas fueron desarrolladas como contribucion al proyecto opensource de la plataforma Pystol y se espera que en un futuro puedan ser integradas a esta.\\
+
+\par Es necesario ejecutar el siguiente script para Linux (ver Figura \ref{fig:initsh}), a fin de instalar la colecci\'on de los test de inyecci\'on de fallas en Ansible, que se presentan mas adelante en este documento:
+
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/captures/initsh.PNG}
+	\caption{Captura del Script init.sh.}
+	\label{fig:initsh}
+\end{figure}
+
+\carlos{Al inyectar los fallos debe haber una herramienta  que este generando las peticiones WEB, lectura/escritura, o inyectar trafico. Que herramienta estan utilizando, que parametros de configuracion tiene, por cuanto tiempo estan generando las peticiones?}
  
- \carlos{Al inyectar los fallos debe haber una herramienta  que este generando las peticiones WEB, lectura/escritura, o inyectar trafico. Que herramienta estan utilizando, que parametros de configuracion tiene, por cuanto tiempo estan generando las peticiones?}
+\carlos{cuantos usuarios concurrentes estan lanzando las peticiones}
  
- \carlos{cuantos usuarios concurrentes estan lanzando las peticiones}
+\carlos{aqui tienen un ejemplo de el criterio para generar el trafico, https://k6.io/docs/test-types/stress-testing/}
  
- \carlos{aqui tienen un ejemplo de el criterio para generar el trafico, https://k6.io/docs/test-types/stress-testing/}
- 
- \carlos{piensen: que algoritmo tiene sentido que el cliente simule? Tiene sentido hacer un stress test, y aparte estamos lanzando Pystol? O buscamos simular el "comportamiento ideal"?}
+\carlos{piensen: que algoritmo tiene sentido que el cliente simule? Tiene sentido hacer un stress test, y aparte estamos lanzando Pystol? O buscamos simular el "comportamiento ideal"?}
 
 \subsubsection{Desarrollo de funciones generales}
 \par A continuación se explicaran las funciones de código que se reutilizan en cada test de inyección.
@@ -517,9 +473,7 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
 
 \par Otra función importante de mencionar es \textbf{run\_module} la cual es básicamente el main de los tests de fallas, aquí se leen todos los parámetros recibidos por el modulo (nombre del pod a afectar, tiempo de la prueba, entre otros según el caso), se seleccionan los pod a afectar y es donde se llama a ejecutar la inyección de la falla.\\
 
-\par También se hace gran uso de la herramienta \textbf{stress-ng} 
-\carlos{que parametros se han utilizado?}
-el cual fue diseñado para ejercitar varios subsistemas físicos de una computadora, así como las diversas interfaces del kernel del sistema operativo. La herramienta tiene una amplia gama de diferentes mecanismos de estrés (conocidos como "factores de estrés") de los cuales se hizo uso y se explicaran mas adelante.\\
+\par También se hace gran uso de la herramienta\carlos{que parametros se han utilizado?} \textbf{stress-ng} el cual fue diseñado para ejercitar varios subsistemas físicos de una computadora, así como las diversas interfaces del kernel del sistema operativo. La herramienta tiene una amplia gama de diferentes mecanismos de estrés (conocidos como "factores de estrés") de los cuales se hizo uso y se explicaran mas adelante.\\
 
 \subsubsection{Desarrollo de test de inyección de latencia en interfaz de red}
 
@@ -639,10 +593,9 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
 \end{figure}
 
 \par En la figura \ref{fig:codi05} se puede observar la función \textbf{ inyect\_disk(name, namespace, module, duration)} la cual esta encargada de inyectar la sobrecarga en el disco.\\
+\par La función recibe por parámetro el nombre y el namespace del pod, la instancia del modulo de ansible y la duración de la falla respectivamente. \\
 
 \carlos{que es sobrecarga de disco?}
-
-\par La función recibe por parámetro el nombre y el namespace del pod, la instancia del modulo de ansible y la duración de la falla respectivamente. \\
 \par Inicialmente en esta función se crea una instancia de la API de Kubernetes para Python, luego se revisa si ciertamente existe un pod con el nombre y el namespace recibido por parámetros, a continuación se definen los comandos que se ejecutaran en el pod en los cuales se instala la herramienta stress-ng y se ejecuta la falla con el siguiente comando
 \textbf{stress-ng --hdd 1 --aggressive --timeout <duration> } a continuación una explicación de lo que significa cada bandera que se utiliza:
 \begin{itemize}
@@ -662,12 +615,11 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
     `pystol\_diskstresspod\_amount': `<Cantidad de Pods>', \\
     `ansible\_python\_interpreter': `/usr/bin/python3'$\}$' \ localhost} %\ -vvvv}
 \end{itemize}
-
 \carlos{hace falta una tabla con los parametros de configuracion}
 
-\subsection{Implementación y despliegue de herramientas para la experimentación}
+\subsection{Implementación y despliegue de herramientas del sistema}
 \par Una vez teniendo las pruebas de inyección de fallas y el ambiente de estas implementado, fue necesario el despliegue de pods con características especificas para poder observar y caracterizar el comportamiento del cluster de Kubernetes con un solo nodo; también la obtención de métricas y resultados.\\
-\subsubsection{Obtencion de metricas de Kubernetes: metrics-server}
+\subsubsection{Obtenci\'on de m\'etricas de Kubernetes: metrics-server}
 
 \par Las métricas de uso de los recursos, como la CPU del pod y el uso de la memoria de este, están disponibles en Kubernetes a través de la API de métricas. Un usuario puede acceder a estas métricas directamente con un comando o un controlador en el clúster, por ejemplo el controlador encargado de escalar los pods horizontalmente. Metrics-Server es un agregador de datos de uso de recursos y es un componente a nivel de clúster que periódicamente extrae las métricas de todos los nodos de Kubernetes que ofrece Kubelet. A través de la API de métricas, puede obtener la cantidad de recursos que utiliza actualmente un nodo o un pod determinado, esta API no almacena los valores de las métricas, por lo que no es posible obtener valores de uso históricos sin el uso de herramientas de terceros \cite{WEB03}. Al consultar el servidor por linea de comandos se pueden obtener las siguientes métricas: 
 \begin{itemize}
@@ -727,13 +679,13 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
 %\subsubsection{Depliegue de pods: Prometheus}
 %%%%%%%%%%
 
-\section{Experimentos de inyección de fallas y Resultados}
+\subsection{Evaluaci\'on del sistema de fallas desarrollado}
 
-\par Una vez desarrollado el sistema de inyección de fallas, se realizaron varios experimentos para comprobar su buen funcionamiento y para estudiar el comportamiento de Kubernetes al sufrir fallas. En esta sección se explican los experimentos realizados y se ilustran los resultados obtenidos.\\
+\par El grupo de experimentos a continuación demostraran que las pruebas de inyección de fallas están comportándose de la manera esperada.\\ 
 
+\par Cabe destacar que todos los experimentos de esta sección se realizaran en una maquina virtual que utiliza un disco HDD, con dos cores de CPU y 4GB de RAM.\\
 
-\par Para medir objetivamente el desempeño del sistema se debe definir un conjunto de indicadores que nos permitan comparar los resultados obtenidos utilizando distintos casos de prueba.\\
-
+\par Para medir objetivamente el desempeño del sistema se debe definir un conjunto de indicadores que nos permitan comparar los resultados obtenidos.\\
 
 \par Como el funcionamiento del sistema de inyección de fallas depende de cuatro módulos: latencia, CPU, memoria y disco se utilizaran distintos indicadores para cada modulo los cuales se explican a continuación:
 \begin{itemize}
@@ -741,27 +693,16 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
     \item Memoria RAM: Se expresara su uso en mebibyte (Mi), su equivalencia en bytes es la siguiente: \[ 1\ mebibyte = 1\ Mi = 2^{20}\ bytes = 1.048.576\ bytes \]
     \item CPU: Se utilizara la unidad de Kubernetes llamada millicpu (m) en el cual se divide un núcleo de CPU en 1000 unidades.
     \item Disco: Se expresara con el porcentaje de operaciones de entrada y salida en disco.
-    \item Desempeño del pod: Se medira con el tiempo total empleado por Nginx para procesar una solicitud, se expresa en segundos.
 \end{itemize} 
 
-\par Esta sección se dividirá en dos partes, la primera en la que se estudiara el correcto funcionamiento de las inyecciones de fallas y la segunda parte en la que se observara y analizará el comportamiento de Kubernetes al sufrir fallas en sus pods.\\
-
-\subsection{Experimentos del funcionamiento de la inyección de fallas}
 \carlos{todas las tablas de los resultados no tienen sentido, deben mostrar el estado del cluster en funcion del tiempo}
 \carlos{RESPONDER PARA CADA PRUEBA:}
 
 \carlos{- Objetivo}
 \carlos{- Por que es interesante medir ese aspecto del desempeño del cluster, por ejemplo, por que es interesante medir la latencia}
 
-
 \carlos{- Cual es la duracion de cada prueba? Donde se configura? Como se ejecuta?}
-
-
-\par El grupo de experimentos a continuación demostraran que las pruebas de inyección de fallas están comportándose de la manera esperada.\\ 
-
-\par Cabe destacar que todos los experimentos de esta sección se realizaran en una maquina virtual que utiliza un disco HDD, con dos cores de CPU y 4GB de RAM.\\
-
-\par Se cuantifico un estado estable inicial, sobre los pods de un despliegue de control antes de realizar cualquier test, el cual proporciono las siguientes métricas iniciales, sobre ambos pods del deployment:
+\par Se cuantific\'o un estado estable inicial, sobre los pods de un despliegue de control antes de realizar cualquier test, el cual proporciono las siguientes métricas iniciales, sobre ambos pods del deployment:
 \begin{table}[ht!]
 \begin{center}
 \begin{tabular}{ |c|c| } 
@@ -773,7 +714,9 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
  \hline
  CPU(millicpu) & 0 mCpu\\
  Memoria(mebibytes) & 3 Mi \\
- Request Time (rt) & 0.492 s\\
+ Uso Disco(\%) & 1.00 \% \\
+ Latencia(milisegundos) & 0.055 ms\\
+ %Request Time (rt) & 0.492 s\\
  \hline
 \end{tabular}
 \end{center}
@@ -782,6 +725,7 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
 \end{table}
 
 \par Los valores de CPU y Memoria se obtienen utilizando la herramienta del metrics-server de Minikube, siendo consultado varias veces antes de los experimentos. Para medir el Request Time o tiempo de solicitud, se accedió al servicio a través de un navegador sin almacenar cache, luego se realizaron dos solicitudes al servicio por minuto, durante 30 minutos, se reviso el access.log de ambos pod del deployment y se calculo el promedio de los tiempos de solicitud en dicho log.
+
 
 \subsubsection{Probando el estrés por CPU}
 
@@ -902,13 +846,26 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
 
 \par Con el resultado se puede observar el aumento sustancial de las operaciones de escritura y lectura en el disco, por lo cual esta funcionando correctamente la inyección de fallas.\\
 
-\subsection{Experimentos del comportamiento de Kubernetes}
+
+
+\section{Evaluacion del sistema de fallas en un entorno de Kubernetes}
 
 \carlos{Cada experimento debe llevar una grafica en funcion del tiempo (duracion del experimento) donde se pueda apreciar el comportamiento habitual y el fallo que estan inyectando}.
 
 \carlos{que criterio estan utilizando para generar ese "trafico", sobrecarga, o latencia?}
 
-\par En el grupo de experimentos a continuación se busca estudiar el comportamiento de Kubernetes ante fallas.\\ 
+\par Una vez desarrollado el sistema de inyección de fallas, se realizaron varios experimentos para estudiar el comportamiento de Kubernetes al sufrir fallas. En esta sección se explican los experimentos realizados y se ilustran los resultados obtenidos.\\
+
+
+\par Se medira objetivamente el desempeño del sistema con el tiempo de solicitud el cual es la duracion total empleada por Nginx para procesar una solicitud y se expresa en segundos. Dicha metrica permitira comparar los resultados obtenidos utilizando distintos casos de prueba.\\
+
+
+% \par Esta sección se dividirá en dos partes, la primera en la que se estudiara el correcto funcionamiento de las inyecciones de fallas y la segunda parte en la que se observara y analizará el comportamiento de Kubernetes al sufrir fallas en sus pods.\\
+
+
+% \subsection{Experimentos del comportamiento de Kubernetes}
+
+% \par En el grupo de experimentos a continuación se busca estudiar el comportamiento de Kubernetes ante fallas.\\ 
 
 \par Se preparo un pod de Nginx que servirá un documento HTML que ocupa 16.8 MB de espacio en disco, a su vez Nginx esta configurado para almacenar los logs de acceso en el cual tendremos la métrica de tiempo de solicitud, dicha variable se estará utilizando para representar el tiempo en segundos que tardo procesar la solicitud y así estudiar el rendimiento durante una falla.\\
 
@@ -916,10 +873,30 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
 
 \par Cabe destacar que todos los experimentos de esta sección se realizaran en una maquina virtual que utiliza un disco HDD, con dos cores de CPU y 4GB de RAM.\\
 
-\subsubsection{Experimento \#1: Falla de CPU en una replica}
+\par Se determino una metrica inicial, sobre los pods de un despliegue, previo a realizar cualquier test o caso, el cual proporciono el siguiente valor promedio del tiempo de solicitud (rt), sobre ambos pods del deployment:
+\begin{table}[ht!]
+\begin{center}
+\begin{tabular}{ |c|c| } 
+ \hline
+ \multicolumn{2}{|c|}{Estado inicial} \\
+ \hline
+ \hline
+ Tiempo de Solicitud & Valor Promedio Inicial\\
+ \hline
+ Request Time (rt) & 0.492 s\\
+ \hline
+\end{tabular}
+\end{center}
+\caption{Tiempo de Solicitud inicial.}
+\label{tab:tabla406}
+\end{table}
+
+\subsubsection{Caso \#1: Falla de CPU en una replica}
+
+\carlos{como han medido el rendimiento? en funcion del tiempo de respuesta de la aplicacion? que aplicacion está funcionando?}
 
 \par Se inyecto la falla de CPU en una replica durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
-\carlos{como han medido el rendimiento? en funcion del tiempo de respuesta de la aplicacion? que aplicacion está funcionando?}
+
 \begin{table}[ht!]
 \begin{center}
 \begin{tabular}{ |c|c| } 
@@ -934,14 +911,14 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
  \hline
 \end{tabular}
 \end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del experimento \#1.}
+\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#1.}
 \label{tab:tabla45}
 \end{table}
 
 
 \par Se pudo observar que el pod afectado utilizo entre 1500 y 1700 de mCPU durante la falla. También se observ\'o que, Kubernetes logro hacer un balanceo de carga ya que la replica que respondió las solicitudes no fue la que se encontraba afectada con la falla del CPU, sin embargo, se pudo notar un leve aumento en el tiempo de solicitud porque el CPU del nodo en general se vio comprometido con la falla.\\
 
-\subsubsection{Experimento \#2: Falla de CPU en dos replicas}
+\subsubsection{Caso \#2: Falla de CPU en dos replicas}
 
 \par Se inyecto la falla de CPU en las dos replicas durante 15 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
@@ -959,13 +936,13 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
  \hline
 \end{tabular}
 \end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del experimento \#2.}
+\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#2.}
 \label{tab:tabla46}
 \end{table}
 
 \par Se pudo observar un aumento considerable del tiempo de solicitud, Kubernetes repartió el total del CPU disponible entre las 2 replicas, cada una con un uso entre 800 y 900 de mCPU (entre 1600 y 1700 total entre ambas) sin embargo esto no resuelve la falla simplemente realizo un balanceo del recurso en el nodo.\\
 
-\subsubsection{Experimento \#3: Falla de disco en una replica}
+\subsubsection{Caso \#3: Falla de disco en una replica}
 
 \par Se inyecto la falla de disco en una replica durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
@@ -983,13 +960,13 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
  \hline
 \end{tabular}
 \end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del experimento \#3.}
+\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#3.}
 \label{tab:tabla47}
 \end{table}
 
 \par Se pudo notar que Kubernetes respondió las solicitudes con ambas replicas (la que poseía la falla y la que no, es decir, no hubo balanceo en esta falla), en ambas replicas se pudo notar un leve aumento en el tiempo de solicitud ya que ambas replicas comparten el mismo disco del nodo, aunque cada una posee su propio volumen y solo era afectado el uso de disco en el pod con falla.\\
 
-\subsubsection{Experimento \#4: Falla de disco en dos replicas}
+\subsubsection{Caso \#4: Falla de disco en dos replicas}
 
 \par Se inyecto la falla de disco en las dos replicas durante 15 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
@@ -1007,13 +984,13 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
  \hline
 \end{tabular}
 \end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del experimento \#4.}
+\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#4.}
 \label{tab:tabla48}
 \end{table}
 
 \par Se pudo observar un leve aumento (a diferencia de las otras pruebas sobre ambos pods) del tiempo de solicitud, ambas replicas dieron respuesta a las solicitudes, Kubernetes no se pudo recuperar de esta falla durante el tiempo que duro el experimento.\\
 
-\subsubsection{Experimento \#5: Falla por latencia en una replica}
+\subsubsection{Caso \#5: Falla por latencia en una replica}
 
 \par Se inyecto la falla por latencia en una replica durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
@@ -1031,13 +1008,13 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
  \hline
 \end{tabular}
 \end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del experimento \#5.}
+\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#5.}
 \label{tab:tabla49}
 \end{table}
 
 \par Se pudo observar que Kubernetes logro hacer un balanceo de carga ya que la replica que respondió las solicitudes no fue la que se encontraba con latencia inyectada, dicha replica sin fallas no se vio afectada por el estrés que se le realizo a su replica hermana, no hubo incremento en el tiempo de respuesta del servicio debido al balanceo.\\
 
-\subsubsection{Experimento \#6: Falla por latencia en las dos replicas}
+\subsubsection{Caso \#6: Falla por latencia en las dos replicas}
 
 \par Se inyecto la falla por latencia en dos replicas durante 15 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
@@ -1055,13 +1032,13 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
  \hline
 \end{tabular}
 \end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del experimento \#6.}
+\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#6.}
 \label{tab:tabla50}
 \end{table}
 
 \par Se pudo observar un aumento considerable del tiempo de solicitud, ambas replicas se encontraban afectadas con 500ms de latencia, Kubernetes no se pudo recuperar de esta falla durante el tiempo que duro el experimento.\\
 
-\subsubsection{Experimento \#7: Falla de memoria RAM en una replica}
+\subsubsection{Caso \#7: Falla de memoria RAM en una replica}
 
 \par Se inyecto la falla de memoria RAM en una replica durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
@@ -1079,13 +1056,13 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
  \hline
 \end{tabular}
 \end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del experimento \#7.}
+\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#7.}
 \label{tab:tabla51}
 \end{table}
 
 \par Se pudo observar al pod afectado con un mayo de 2100 MiB de memoria. También que Kubernetes logro hacer un balanceo de carga ya que la replica que respondió las solicitudes no fue la que se encontraba con la falla, sin embargo, se pudo notar un leve aumento en el tiempo de solicitud del servicio, porque la memoria del nodo en general se vio comprometido con la falla.//
 
-\subsubsection{Experimento \#8: Falla de memoria RAM en dos replicas}
+\subsubsection{Caso \#8: Falla de memoria RAM en dos replicas}
 
 \par Se inyecto la falla de memoria RAM en las dos replicas durante 15 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
@@ -1103,7 +1080,7 @@ el cual fue diseñado para ejercitar varios subsistemas físicos de una computad
  \hline
 \end{tabular}
 \end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del experimento \#8.}
+\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#8.}
 \label{tab:tabla52}
 \end{table}
 
