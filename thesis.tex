@@ -1,0 +1,107 @@
+\documentclass[12pt,letterpaper,final,oneside,openany,onecolumn,obeyspaces]{book} 												
+\usepackage[lmargin=3.5cm,rmargin=2.5cm,tmargin=3.0cm,bmargin=3.0cm]{geometry}
+%\usepackage[latin1]{inputenc}											%european 
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+    pdftitle = {Seminario de Oscar y Thomas},
+    bookmarks = true, 
+    pdfpagemode = FullScreen, 
+}
+\usepackage[colorinlistoftodos]{todonotes}
+\urlstyle{same}
+\usepackage{longtable}
+\usepackage{tabu}
+%\usepackage{floatrow}
+%\DeclareFloatFont{huge}{\huge}
+%\floatsetup[table]{font=huge}
+\usepackage[]{times}
+\usepackage[spanish]{babel}													%español
+
+\newcommand\carlos[1]{\textcolor{red}{Nota de Carlos: #1}}
+\newcommand\oscar[1]{\textcolor{blue}{Nota de Oscar: #1}}
+\newcommand\thomas[1]{\textcolor{green}{Nota de Thomas: #1}}
+
+\usepackage{amsmath}	%math package
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{array}
+%\usepackage{algorithm_spa}
+\usepackage{algpseudocode}
+\usepackage[footnotesize]{subfigure}
+\usepackage{makeidx}
+\usepackage{color}
+
+\makeindex
+\renewcommand{\baselinestretch}{1}
+\renewcommand{\contentsname}{Índice General}%{Tabla de Contenidos}
+\renewcommand{\listfigurename}{Lista de Figuras}
+\renewcommand{\listtablename}{\'Indice de Tablas}
+\renewcommand{\chaptername}{Capítulo}
+\renewcommand{\bibname}{Bibliografía}
+\renewcommand\floatpagefraction{.9}
+\renewcommand\topfraction{.9}
+\renewcommand\bottomfraction{.9}
+\renewcommand\textfraction{.1}
+\addto\captionsspanish{%
+  \renewcommand{\tablename}%
+    {Tabla}%
+}
+
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+% Different font in captions
+\newcommand{\captionfonts}{\small}
+\newcommand{\tabitem}{\textbullet~~}
+\makeatletter  % Allow the use of @ in command names
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{{\captionfonts #1: #2}}%
+  \ifdim \wd\@tempboxa >\hsize
+    {\captionfonts #1: #2\par}
+  \else
+    \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+\makeatother   % Cancel the effect of \makeatletter
+
+%Inicio de documento
+\begin{document}
+\hyphenation{pa-la-bra}
+
+\renewcommand{\contentsname}{Tabla de Contenidos}
+\renewcommand{\listfigurename}{Lista de Figuras}
+\renewcommand{\listtablename}{Lista de Tablas}
+	\frontmatter
+		\input{portada}
+		\input{agradecimientos}	%opcional
+		%\input{dedicatoria}		%opcional
+		\input{abstract}
+		\tableofcontents %indice
+		\listoffigures	%opcional
+		\listoftables		%opcional
+		\input{intro}
+	\mainmatter
+		\input{chapter1}
+		\input{chapter2}
+		\input{chapter3}
+		\input{chapter4}
+		%\input{chaptern}
+		\input{conclusiones}
+	\backmatter
+		\bibliographystyle{IEEEtran}
+		\renewcommand\bibname{Referencias}
+		%\bibliographystyle{plain}     %You may prefer \bibliographystyle{alpha}
+		%\bibliographystyle{alpha}
+		%\bibliographystyle{babalpha}
+		\bibliography{books}
+		%\nocite{*}
+		%\input{anexos}	%opcional
+\end{document}
