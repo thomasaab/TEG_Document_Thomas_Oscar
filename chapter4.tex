@@ -1,6 +1,6 @@
 \chapter{Marco Aplicativo}
 
-\par En la investigación presentada se destaco la importancia de realizar pruebas de los sistemas de computo antes, durante y después de su desarrollo, los beneficios y dificultades que conlleva el despliegue de una nube híbrida, así como la relevancia de la inyección de fallas y la tendencia actual de este tipo de actividades de pruebas, debido a su importancia en los sistemas para mejorar el comportamiento de estos en caso de fallas.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\par En la investigación presentada se destaco la importancia de realizar pruebas de los sistemas de computo antes, durante y después de su desarrollo, los beneficios y dificultades que conlleva el despliegue de una nube híbrida, así como la relevancia de la inyección de fallas y la tendencia actual de este tipo de actividades de pruebas, debido a su importancia en los sistemas para mejorar el comportamiento de estos en caso de fallas.\\
 \par Se planteo el desarrollo de un sistema automatizado con herramientas previamente definidas y comparadas, para obtener un entorno de pruebas e inyectar fallas a un clúster de Kubernetes, posteriormente con la respuesta obtenida podremos comparar el comportamiento del clúster al sufrir la falla con un estado óptimo previamente capturado, y establecer la respuesta del sistema a la falla tratada. Se utilizo Ansible para la automatización de las pruebas y así el usuario que utilice el sistema pueda escoger de manera controlada las fallas que desea inyectar. Con la ayuda de Minikube se desplegó un clúster de Kubernetes con un único nodo. Se despliega el clúster de Kurbenetes haciendo uso del container runtime Dockers para el despliegue de los Pods. El uso de estas herramientas sobre otras de similar propósito es respaldado por el hecho que son ampliamente utilizadas, son open source, existe el fácil acceso a la documentación y se posee conocimiento previo en el uso de estas.\\
 %%%%%%%%%%%
 \section{Objetivos}\label{sec:41}
@@ -54,9 +54,11 @@
 \section{Alcance}
 
 
-\par En la actualidad, las organizaciones, sin importar su tamaño, requieren probar la fiabilidad de su entorno de cómputo híbrido en sus operaciones de desarrollo, para asegurar un servicio estable y confiable. Este proyecto propone estudiar la respuesta de un cluster de Kubernetes a fallas controladas en recursos de red, procesamiento y almacenamiento. Especificamente se consider\'o la inyecci\'on de las siguientes fallas: i) estr\'es por CPU; ii) estr\'es por latencia; iii) estr\'es por memoria RAM y iv) estr\'es por disco; y se evaluo el efecto de cada una de ellas por separado en un entorno de Kuberenetes con deployments de dos replicas. Estas son las fallas que comunmente pueden afectar la calidad de servicio en sistemas desplegados en una red, o mas a\'un, en la internet, donde m\'ultiples usuarios intentan acceder a un recurso, aumentando la carga del sistema, y as\'i el uso de los recursos. Se realiza con dos replicas para estudiar el comportamiento de Kubernetes en el caso de poseer un pod ``sano'' y uno ``enfermo'' y en el caso de que ambas replicas se encuentran afectadas. \\ %(insertar justificacion de pq esas fallas y porque dos replicas nada mas). \\  
+\par En la actualidad, las organizaciones sin importar su tamaño, para asegurar un servicio estable y confiable requieren probar la fiabilidad de su entorno de cómputo híbrido en sus operaciones de desarrollo. Este proyecto propone estudiar la respuesta de un cluster de Kubernetes a fallas controladas en recursos de red, procesamiento y almacenamiento. Específicamente se consider\'o la inyecci\'on de las siguientes fallas: i) estr\'es por CPU; ii) estr\'es por latencia; iii) estr\'es por memoria RAM y iv) estr\'es por disco; y se evaluó el efecto de cada una de ellas por separado en un entorno de Kuberenetes con deployments de dos replicas. Estas son las fallas que comúnmente pueden afectar la calidad de servicio en sistemas desplegados en una red, o mas a\'un, en la internet, donde m\'ultiples usuarios intentan acceder a un recurso, aumentando la carga del sistema, y as\'i el uso de los recursos. Se realiza con dos replicas para estudiar el comportamiento de Kubernetes en el caso de poseer un pod ``sano'' y uno ``enfermo'' y en el caso de que ambas replicas se encuentran afectadas. \\ %(insertar justificacion de pq esas fallas y porque dos replicas nada mas). \\  
 
-\par El estudio está dirigido a aquellas organizaciones que deseen implementar experimentos de inyección de fallas en la nube híbrida, utilizando herramientas que pueden ser obtenidas con facilidad y a su vez probar la capacidad de sus servicios, en caso de eventos indeseables a lo largo de su desarrollo. \\
+% \par El estudio está dirigido a aquellas organizaciones que deseen implementar experimentos de inyección de fallas en Kubernetes, utilizando herramientas que pueden ser obtenidas con facilidad y a su vez probar la capacidad de sus servicios, en caso de eventos indeseables a lo largo de su desarrollo. \\
+
+\par El estudio está dirigido a explorar la implementación de experimentos de inyección de fallas en Kubernetes, utilizando herramientas que pueden ser obtenidas con facilidad y propiciando resultados preliminares útiles para los testers en caso de eventos indeseables a lo largo del desarrollo. Estos resultados preliminares son una primera etapa importante en estudios actuales y para futuros desarrollos mas completos y complejos dirigidos a la evaluación, análisis y cuantificación de fallas en sistema de computación híbrida. \\
 
 % \par A su vez en el estudio se plantearan ciertas incógnitas sobre como se comporta Kubernetes ante ciertas fallas y se buscara responderlas.
 
@@ -256,10 +258,13 @@ una (1) instancia EC2 de AWS (Amazon Web Services) debido a que se posee conocim
 
 \begin{figure}[htpb!]
 	\centering
-	\includegraphics[width=0.43\columnwidth]{images/usecase/ucfaultinjectionF.png}
+	\includegraphics[width=0.75\columnwidth]{images/usecase/ucfaultinjectionF.png}
 	\caption{Diagarama de Casos de Uso (UC) para los módulos de inyección de fallas en Ansible.}
 	\label{fig:uc01}
 \end{figure}
+
+\par A continuación se presentan cada una de las especificaciones de los casos de uso previamente señalados en el diagrama.
+\pagebreak
 
 \textbf{Especificaciones de Casos de Uso}\\
 % \par\textbf{UCN Eliminar Pod:}
@@ -310,6 +315,8 @@ una (1) instancia EC2 de AWS (Amazon Web Services) debido a que se posee conocim
 \begin{table}[htpb!]
 \tiny
 \centering
+\caption{Especificación de UCN-1.}
+\vspace{0.5\baselineskip}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|}
 \hline
@@ -332,7 +339,6 @@ Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
  Comentarios & \multicolumn{3}{l|}{{\begin{tabular}[c]{@{}l@{}}Los parámetros necesarios para la  ejecución son el nombre del \\ namespace, el nombre del pod a sobrecargar  o “random poisson” \\ (para sobrecargar pods aleatoriamente), la cantidad de pods \\ a sobrecargar (debe ser mayor o igual a 0 para sobrecarga aleatoria \\ e igual a 1 para un pod específico), la duración de ejecución del módulo \\ (experimento) y la ubicación del intérprete de python para ansible \\ (la cual en Linux por defecto es /usr/bin/python3).\end{tabular}}} \\ \hline
 \end{tabular}%
 }
-\caption{Especificación de UCN-1.}
 \label{tab:UCN1}
 \end{table}
 
@@ -344,6 +350,8 @@ Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
 \begin{table}[htpb!]
 \tiny
 \centering
+\caption{Especificación de UCN-2.}
+\vspace{0.5\baselineskip}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|}
 \hline
@@ -366,7 +374,6 @@ Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
 Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros necesarios para la ejecución son \\ el nombre del namespace, el nombre del pod a ser \\ sometido a la saturación de disco  o “random poisson” \\ (para saturar pods aleatoriamente), la cantidad de pods a \\ saturar (debe ser mayor o igual a 0 para saturar aleatoriamente \\ e igual a 1 para un pod específico), la duración de ejecución \\ del módulo (experimento) y la ubicación del intérprete de python \\ para ansible (la cual en Linux por defecto es /usr/bin/python3).\end{tabular}} \\ \hline
 \end{tabular}%
 }
-\caption{Especificación de UCN-2.}
 \label{tab:UCN2}
 \end{table}
 
@@ -377,6 +384,8 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
 \begin{table}[htpb!]
 \tiny
 \centering
+\caption{Especificación de UCN-3.}
+\vspace{0.5\baselineskip}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|}
 \hline
@@ -399,16 +408,17 @@ Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
 Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros necesarios para la ejecución son el \\ nombre del namespace, el nombre del pod a ser sometido \\ al incremento de latencia  o “random poisson” (para afectar \\ pods aleatoriamente), la cantidad de pods a afectar (debe ser \\ mayor o igual a 0 para afectar aleatoriamente e igual a 1 para \\ un pod específico), la duración de ejecución del módulo (experimento),  \\ la ubicación del intérprete de python para ansible (la cual en Linux por \\ defecto es /usr/bin/python3) y la “cantidad” de latencia en milisegundos.\end{tabular}} \\ \hline
 \end{tabular}%
 }
-\caption{Especificación de UCN-3.}
 \label{tab:UCN3}
 \end{table}
 
 \vspace{\baselineskip}
 \par\textbf{UCN-4 Sobrecargar Memoria del Pod:}
-
-\begin{table}[htpb!]
+\label{sec:expli_test12}
+\begin{table}[ht!]
 \tiny
 \centering
+\caption{Especificación de UCN-4.}
+\vspace{0.5\baselineskip}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|}
 \hline
@@ -431,7 +441,6 @@ Excepciones & Paso & \multicolumn{2}{l|}{Acción} \\ \hline
 Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros necesarios para la ejecución son el nombre \\ del namespace, el nombre del pod a sobrecargar  o “random poisson” \\ (para sobrecargar pods aleatoriamente), la cantidad de pods a sobrecargar \\ (debe ser mayor o igual a 0 para sobrecarga aleatoria e igual a 1 para \\ un pod específico), la duración de ejecución del módulo (experimento) y \\ la ubicación del intérprete de python para ansible (la cual en Linux por \\ defecto es /usr/bin/python3).\end{tabular}} \\ \hline
 \end{tabular}%
 }
-\caption{Especificación de UCN-4.}
 \label{tab:UCN4}
 \end{table}
 
@@ -473,7 +482,7 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
 
 \par Otra función importante de mencionar es \textbf{run\_module} la cual es básicamente el main de los tests de fallas, aquí se leen todos los parámetros recibidos por el modulo (nombre del pod a afectar, tiempo de la prueba, entre otros según el caso), se seleccionan los pod a afectar y es donde se llama a ejecutar la inyección de la falla.\\
 
-\par También se hace gran uso de la herramienta\carlos{que parametros se han utilizado?} \textbf{stress-ng} el cual fue diseñado para ejercitar varios subsistemas físicos de una computadora, así como las diversas interfaces del kernel del sistema operativo. La herramienta tiene una amplia gama de diferentes mecanismos de estrés (conocidos como "factores de estrés") de los cuales se hizo uso y se explicaran mas adelante.\\
+\par También se hace gran uso de la herramienta\carlos{que parametros se han utilizado?}\thomas{los parámetros utilizados se describen en detalle cuando explicamos la implementación de cada test por separado puede ver un ejemplo \hyperref[sec:sobrecarga_de_CPU]{AQUI (hacer click)} a partir del tercer párrafo }\textbf{stress-ng} el cual fue diseñado para ejercitar varios subsistemas físicos de una computadora, así como las diversas interfaces del kernel del sistema operativo. La herramienta tiene una amplia gama de diferentes mecanismos de estrés (conocidos como "factores de estrés") de los cuales se hizo uso y se explicaran mas adelante.\\
 
 \subsubsection{Desarrollo de test de inyección de latencia en interfaz de red}
 
@@ -508,14 +517,14 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
     \item \textbf{ansible -m include\_role \ -a `name=pystol.actions.networkstresspod' \ -e `$\{$ \\
     `pystol\_networkstresspod\_namespace': `<Namespace de los Pods>', \\
     `pystol\_networkstresspod\_pod': `<Nombre del Pod o aleatorio>', \\
-    `pystol\_networkstresspod\_duration': `<Duracion de la Falla', \\
+    `pystol\_networkstresspod\_duration': `<Duración de la Falla', \\
     `pystol\_networkstresspod\_amount': `<Cantidad de Pods>', \\
     `ansible\_python\_interpreter': `/usr/bin/python3', \\
     `pystol\_networkstresspod\_latency': `<Cantidad de Latencia en ms>'$\}$' \ localhost} %\ -vvvv}
 \end{itemize}
 
 \subsubsection{Desarrollo de test de inyección de sobrecarga de CPU}
-
+\label{sec:sobrecarga_de_CPU}
 \begin{figure}[htpb!]
 	\centering
 	\includegraphics[width=0.95\columnwidth]{images/captures/codigo/Capture_inyect_cpu.PNG}
@@ -528,6 +537,7 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
 \par Inicialmente en esta función se crea una instancia de la API de Kubernetes para Python, luego se revisa si ciertamente existe un pod con el nombre y el namespace recibido por parámetros, a continuación se definen los comandos que se ejecutaran en el pod en los cuales se instala la herramienta stress-ng y se ejecuta la falla con el siguiente comando 
 \textbf{stress-ng --cpu 8 --io 4 --vm 2 --vm-bytes 128M --timeout <duration>} a continuación una explicación de lo que significa cada bandera que se utiliza:
 \carlos{esto no tiene mucho sentido, la prueba correcta sería, un pod con una aplicacion web, luego generan tráfico simulado con un criterio X, en ese momento lanzan la prueba desde ansible que satura el pod, miden como se comporta la aplicacion web, deja de responder? se crea otro pod?}
+\thomas{No comprendemos muy bien en que contexto nos comenta esto, nosotros intentamos responder estas preguntas (deja de responder? se crea otro pod?) pero no en esta sección,  puede ver un ejemplo \hyperref[sec:falla_cpu_exp]{AQUI (hacer click)}, Nunca logramos tumbar el servicio pero si afectar su rendimiento, esto lo comentamos en el ultimo párrafo de las conclusiones}
 \begin{itemize}
         \item --cpu 8: Se inician 8 trabajadores que realizaran todos los trabajos de estress de CPU disponibles en stress-ng.
         \item --io 4: Se inician 4 trabajadores que realizan operaciones de entrada y salida en la cache del disco.
@@ -543,7 +553,7 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
     \item \textbf{ansible -m include\_role \ -a `name=pystol.actions.cpustresspod' \ -e `$\{$ \\   
     `pystol\_cpustresspod\_namespace': `<Namespace de los Pods>',\\
     `pystol\_cpustresspod\_pod': `<Nombre del Pod o aleatorio>',\\
-    `pystol\_cpustresspod\_duration': `<Duracion de la Falla>',\\
+    `pystol\_cpustresspod\_duration': `<Duración de la Falla>',\\
     `pystol\_cpustresspod\_amount': `<Cantidad de Pods>',\\
     `ansible\_python\_interpreter': `/usr/bin/python3'$\}$' \ localhost} % \ -vvvv}
 \end{itemize}
@@ -576,7 +586,7 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
     \item \textbf{ansible -m include\_role \ -a `name=pystol.actions.memorystresspod' \ -e `$\{$ \\
     `pystol\_memorystresspod\_namespace': `<Namespace de los Pods>', \\
     `pystol\_memorystresspod\_pod': `<Nombre del Pod o aleatorio>', \\
-    `pystol\_memorystresspod\_duration': `<Duracion de la Falla>', \\
+    `pystol\_memorystresspod\_duration': `<Duración de la Falla>', \\
     `pystol\_memorystresspod\_amount': `<Cantidad de Pods>', \\
     `ansible\_python\_interpreter': `/usr/bin/python3'$\}$' \ localhost} %\ -vvvv}
 \end{itemize}
@@ -593,9 +603,14 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
 \end{figure}
 
 \par En la figura \ref{fig:codi05} se puede observar la función \textbf{ inyect\_disk(name, namespace, module, duration)} la cual esta encargada de inyectar la sobrecarga en el disco.\\
+
+\par Este test saturara el disco con una cantidad considerable de operaciones de entrada y salida con lo cual se afectara el rendimiento del mismo, dichas operaciones son sobre un buffer ficticio por lo cual no genera almacenamiento basura. \\
+
 \par La función recibe por parámetro el nombre y el namespace del pod, la instancia del modulo de ansible y la duración de la falla respectivamente. \\
 
 \carlos{que es sobrecarga de disco?}
+\thomas{Por su comentario agregamos una breve explicación de que hace la falla, puede verla en el segundo párrafo de esta sección.}
+
 \par Inicialmente en esta función se crea una instancia de la API de Kubernetes para Python, luego se revisa si ciertamente existe un pod con el nombre y el namespace recibido por parámetros, a continuación se definen los comandos que se ejecutaran en el pod en los cuales se instala la herramienta stress-ng y se ejecuta la falla con el siguiente comando
 \textbf{stress-ng --hdd 1 --aggressive --timeout <duration> } a continuación una explicación de lo que significa cada bandera que se utiliza:
 \begin{itemize}
@@ -605,17 +620,53 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
     \end{itemize}
 
 \par Por ultimo utilizando \textbf{stream} y \textbf{connect\_get\_namespaced\_pod\_exec} los cuales provienen de la API de kubernetes, se logran ejecutar en el pod todos los comandos definidos previamente y recibir la respuesta.\\
-
+\label{sec:expli_test1}
 \par Para ejecutar este modulo de inyección de fallas en disco localmente, se configur\'o el siguiente comando:
 \begin{itemize}
     \item \textbf{ansible -m include\_role \ -a `name=pystol.actions.diskstresspod' \ -e `$\{$ \\
     `pystol\_diskstresspod\_namespace': `<Namespace de los Pods>', \\
     `pystol\_diskstresspod\_pod': `<Nombre del Pod o aleatorio>', \\
-    `pystol\_diskstresspod\_duration': `<Duracion de la Falla>', \\
+    `pystol\_diskstresspod\_duration': `<Duración de la Falla>', \\
     `pystol\_diskstresspod\_amount': `<Cantidad de Pods>', \\
     `ansible\_python\_interpreter': `/usr/bin/python3'$\}$' \ localhost} %\ -vvvv}
 \end{itemize}
 \carlos{hace falta una tabla con los parametros de configuracion}
+\thomas{Realizamos la tabla \ref{tab:tablaconfdisco}, con el fin de saber si resuelve lo que nos comenta, si la respuesta es satisfactoria procederemos a cambiar la redacción y agregarlo a todas las secciones que lo ameritan.}
+
+\begin{table}[ht!]
+\centering
+\caption{Parámetros de configuración para el comando de inyección de falla de disco con Ansible.}
+\vspace{0.5\baselineskip}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|c|c|c|} 
+ \hline
+ \multicolumn{3}{|c|}{\textbf{Parámetros de Configuración}} \\
+ \hline
+ \hline
+ Parámetro & Variable & Descripción\\
+ \hline
+ -m & include\_role & Nombre del modulo a ejecutar\\
+ \hline
+ -a & ‘name=pystol.actions.diskstresspod’ & \begin{tabular}[t]{@{}c@{}}Nombre de la acción del modulo \\ que se desea ejecutar\end{tabular}\\
+  \hline
+ -e & <Parámetros para la acción de disco> & \begin{tabular}[t]{@{}c@{}}Argumentos extra que recibirá la acción \\ que se ejecutara (definidas en la \\sección de parámetros para la acción de \\ disco de  esta tabla)\end{tabular}\\
+ \hline
+ \hline
+ \multicolumn{3}{|c|}{\textbf{Parámetros para la acción de disco}} \\
+ \hline
+ \hline
+ Parámetro & Variable & Descripción\\
+ \hline
+ \begin{tabular}[t]{@{}c@{}}pystol\_diskstresspod\\ \_namespace \end{tabular} & <Namespace de los Pods> & \begin{tabular}[t]{@{}c@{}}Identificador del namespace \\ en el cluster que contiene los pods \\ a ser afectados por la falla\end{tabular}\\ \hline
+ \begin{tabular}[t]{@{}c@{}}pystol\_diskstresspod\\ \_pod \end{tabular} & <Nombre del Pod o aleatorio> & \begin{tabular}[t]{@{}c@{}}Identificador en el cluster del pod a \\ ejecutar la falla o ‘aleatorio’ para \\ ejecutar en varios pods del \\ namespace aleatoriamente \end{tabular} \\ \hline
+ \begin{tabular}[t]{@{}c@{}}pystol\_diskstresspod\\ \_duration \end{tabular} & <Duración de la Falla> & \begin{tabular}[t]{@{}c@{}}Tiempo de duración de la falla en \\ minutos, numero entero > a 0 o \\ por defecto 5 minutos \end{tabular} \\ \hline
+ \begin{tabular}[t]{@{}c@{}}pystol\_diskstresspod\\ \_amount \end{tabular} & <Cantidad de Pods> & \begin{tabular}[t]{@{}c@{}} Cantidad de pods a afectar por \\ la falla, numero entero > 0 para \\ afectar dicha cantidad de pods \\ aleatoriamento o 1 si solo se va afectar \\ un pod especifico individual \\ (depende del valor en pystol\\ \_diskstresspod\_pod)  \end{tabular} \\ \hline
+ \begin{tabular}[t]{@{}c@{}}ansible\_python\\ \_interpreter \end{tabular} & /usr/bin/python3 & \begin{tabular}[t]{@{}c@{}}Ruta por defecto al directorio \\ donde se encuentra el \\ interprete de python \end{tabular} \\
+ \hline
+\end{tabular}
+}
+\label{tab:tablaconfdisco}
+\end{table}
 
 \subsection{Implementación y despliegue de herramientas del sistema}
 \par Una vez teniendo las pruebas de inyección de fallas y el ambiente de estas implementado, fue necesario el despliegue de pods con características especificas para poder observar y caracterizar el comportamiento del cluster de Kubernetes con un solo nodo; también la obtención de métricas y resultados.\\
@@ -675,37 +726,46 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
 
 \par Cada vez que alguien realiza una petición al servicio, dicha solicitud se ve reflejada en el access log de Nginx, el cual puede ser revisado copiando el archivo desde el pod al equipo realizando \textbf{kubectl cp <podIdentifier>:/var/log/nginx/access.log <directoryForCopy>/access.log}, luego se accede al log con uso de un editor de texto como vim o nano y se pueden observar las metricas de request\_time y response\_time.\\ 
 
+\label{sec:servicio_web}
 \par Así fue implementado en su totalidad el ambiente a usar para probar el funcionamiento de los test, así como, los pods para los experimentos y poder medir métricas simples, de fácil lectura. 
 %\subsubsection{Depliegue de pods: Prometheus}
 %%%%%%%%%%
 
 \subsection{Evaluaci\'on del sistema de fallas desarrollado}
 
-\par El grupo de experimentos a continuación demostraran que las pruebas de inyección de fallas están comportándose de la manera esperada.\\ 
+\par El grupo de experimentos a continuación demuestran que las pruebas de inyección de fallas se comportan de la manera esperada.\\ 
 
-\par Cabe destacar que todos los experimentos de esta sección se realizaran en una maquina virtual que utiliza un disco HDD, con dos cores de CPU y 4GB de RAM.\\
+\par Cabe destacar que todos los experimentos de esta sección se realizaron en una maquina virtual que utiliza un disco HDD, con dos cores de CPU y 4GB de RAM.\\
 
-\par Para medir objetivamente el desempeño del sistema se debe definir un conjunto de indicadores que nos permitan comparar los resultados obtenidos.\\
+\par Para medir objetivamente el desempeño del sistema se  definieron un conjunto de indicadores que permitieron comparar los resultados obtenidos.\\
 
-\par Como el funcionamiento del sistema de inyección de fallas depende de cuatro módulos: latencia, CPU, memoria y disco se utilizaran distintos indicadores para cada modulo los cuales se explican a continuación:
+\par Como el funcionamiento del sistema de inyección de fallas depende de cuatro módulos: latencia, CPU, memoria y disco se utilizaron distintos indicadores para cada prueba, los cuales se explican a continuación:
 \begin{itemize}
-    \item Latencia: Se utilizara el ping para su medición, se expresa en milisegundos (ms) es el tiempo que tardan en comunicarse dos puntos en la red.
-    \item Memoria RAM: Se expresara su uso en mebibyte (Mi), su equivalencia en bytes es la siguiente: \[ 1\ mebibyte = 1\ Mi = 2^{20}\ bytes = 1.048.576\ bytes \]
-    \item CPU: Se utilizara la unidad de Kubernetes llamada millicpu (m) en el cual se divide un núcleo de CPU en 1000 unidades.
-    \item Disco: Se expresara con el porcentaje de operaciones de entrada y salida en disco.
+    \item Latencia: Se utilizo ping para su medición, se expresa en milisegundos (ms) es el tiempo que tardan en comunicarse dos puntos en la red.
+    \item Memoria RAM: Se expreso su uso en mebibyte (Mi), su equivalencia en bytes es la siguiente: \[ 1\ mebibyte = 1\ Mi = 2^{20}\ bytes = 1.048.576\ bytes \]
+    \item CPU: Se utilizo la unidad de Kubernetes llamada millicpu (m) en el cual se divide un núcleo de CPU en 1000 unidades.
+    \item Disco: Se expreso con el porcentaje de operaciones de entrada y salida en disco.
 \end{itemize} 
 
 \carlos{todas las tablas de los resultados no tienen sentido, deben mostrar el estado del cluster en funcion del tiempo}
+\thomas{Estamos realizando gráficos los cuales tendrán en el eje X el tiempo y en el eje Y la variable a estudiar, esperamos poder tenerlos listo para cada experimento lo antes posible.}
 \carlos{RESPONDER PARA CADA PRUEBA:}
 
 \carlos{- Objetivo}
 \carlos{- Por que es interesante medir ese aspecto del desempeño del cluster, por ejemplo, por que es interesante medir la latencia}
+\thomas{Agregado}
 
 \carlos{- Cual es la duracion de cada prueba? Donde se configura? Como se ejecuta?}
+\thomas{con respecto a la duración lo acabamos de agregar; sobre como se ejecuta y como se configura el test lo hablamos en dos lugares distintos 
+\hyperref[sec:expli_test12]{AQUI (hacer click) } y \hyperref[sec:expli_test1]{AQUI (hacer click)} de igual manera si hay alguna configuración que haya que destacar (como por ejemplo el ping que se configuro para la prueba) lo estamos agregando.}
+
+
 \par Se cuantific\'o un estado estable inicial, sobre los pods de un despliegue de control antes de realizar cualquier test, el cual proporciono las siguientes métricas iniciales, sobre ambos pods del deployment:
 \begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
+\centering
+\caption{Métricas iniciales Deployment.}
+\vspace{0.5\baselineskip}
+\begin{tabular}{|c|c|} 
  \hline
  \multicolumn{2}{|c|}{Estado inicial} \\
  \hline
@@ -715,149 +775,203 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
  CPU(millicpu) & 0 mCpu\\
  Memoria(mebibytes) & 3 Mi \\
  Uso Disco(\%) & 1.00 \% \\
- Latencia(milisegundos) & 0.055 ms\\
+ Latencia(milisegundos) & 0.045 ms\\
  %Request Time (rt) & 0.492 s\\
  \hline
 \end{tabular}
-\end{center}
-\caption{Métricas iniciales Deployment.}
 \label{tab:tabla40}
 \end{table}
 
-\par Los valores de CPU y Memoria se obtienen utilizando la herramienta del metrics-server de Minikube, siendo consultado varias veces antes de los experimentos. Para medir el Request Time o tiempo de solicitud, se accedió al servicio a través de un navegador sin almacenar cache, luego se realizaron dos solicitudes al servicio por minuto, durante 30 minutos, se reviso el access.log de ambos pod del deployment y se calculo el promedio de los tiempos de solicitud en dicho log.
+\par Los valores de CPU y Memoria se obtuvieron utilizando la herramienta del metrics-server de Minikube, siendo consultado varias veces antes de los experimentos. Para medir el Request Time o tiempo de solicitud, se accedió al servicio a través de un navegador sin almacenar cache, durante 30 minutos se realizaron dos solicitudes a dicho servicio por minuto, luego se reviso el access.log de ambos pod del deployment y se calculo el promedio de los tiempos de solicitud en dicho log.
 
 
 \subsubsection{Probando el estrés por CPU}
 
 \carlos{Aqui hace falta una grafica que muestre el uso del CPU en funcion del tiempo, en un estado normal}
 \carlos{Aqui hace falta una grafica que muestra el uso del CPU en funcion del tiempo mientras se ejecuta el fault injection}
+\thomas{Agregado}
 
-\par Se probara la inyección de falla estudiando el uso inicial del CPU en millicpu (antes del estrés) de un pod de Nginx que tiene dos cores de CPU, luego se estresara al agregarle la sobrecarga de CPU y por ultimo se observara el estado (mientras sucede la falla) para compararlo con el inicial y así demostrar que esta funcionando dicha falla.\\
+\par Es importante medir el CPU ya que este componente se encarga de procesar todas las instrucciones del computador, leyendo las órdenes y requisitos del sistema operativo, así como las instrucciones de cada uno de los componentes y las aplicaciones. El mal funcionamiento del CPU pondrá en riesgo el rendimiento de todo el sistema, hasta podría ocasionar el apagado del computador.\\
 
-\par Para obtener el indicador en millicpu en cada estado, se utilizara el comando \\ \verb|kubctl top pods| desde la maquina virtual que tiene alojado a Kubernetes, dicho comando básicamente permite ver el consumo de recursos de los pods.\\
+% \par Se probo la inyección de falla al estudiar el uso inicial del CPU en millicpu (antes del estrés) de un pod de Nginx que tiene dos cores de CPU, luego se estreso al agregarle la sobrecarga de CPU y por ultimo se observa el estado (mientras sucede la falla) para compararlo con el inicial y así demostrar que esta funcionando dicha falla.\\
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & CPU(millicpu)\\
- \hline
- Inicial & 0\\
- Falla & 1658\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del uso del CPU en los estados del experimento de estrés por CPU.}
-\label{tab:tabla41}
-\end{table}
+\par Para obtener el indicador en millicpu en cada estado, se utilizo el comando \\ \verb|kubctl top pods| desde la maquina virtual que tiene alojado a Kubernetes, dicho comando básicamente permite ver el consumo de recursos de los pods.\\
 
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & CPU(millicpu)\\
+%  \hline
+%  Inicial & 0\\
+%  Falla & 1658\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del uso del CPU en los estados del experimento de estrés por CPU.}
+% \label{tab:tabla41}
+% \end{table}
 
-\par Con el resultado se puede observar el aumento sustancial del uso del CPU, el pod afectado durante el estrés esta usando aproximadamente el 80\% del CPU, por lo cual esta funcionando correctamente la inyección de fallas.\\
+\par En la Figura \ref{fig:usocpu01} se presenta la variación del uso del CPU en función del tiempo. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla de CPU. El sistema fue monitorizado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. La figura muestra un tiempo de retardo en la respuesta al estrés de aproximadamente 30 segundos, tanto al inicio como al final, esto posiblemente debido al tiempo de respuesta que toma el servicio de Kubernetes para obtener métricas (metrics-server), cuando va a retornar el snapshot del consumo de recursos del pod. Una vez estabilizado el estrés este alcanza un valor medio de 1809.25m con una desviación estándar igual a 9.23. Y una diferencia de 1809.25m sobre el estado sin estrés.\\
+
+\par Con el resultado se puede observar el aumento sustancial del uso del CPU, el pod afectado durante el estrés esta usando aproximadamente el 90\% del CPU una vez estabilizada la falla, por lo cual esta funcionando correctamente la inyección de fallas.\\
+
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficaspruebas/usocpu.png}
+	\caption{Gráfica del uso del CPU por un pod en función del tiempo durante el experimento.}
+	\label{fig:usocpu01}
+\end{figure}
 
 \subsubsection{Probando el estrés por latencia}
 
 \carlos{Aqui hace falta una grafica que muestre la latencia en funcion del tiempo, en un estado normal}
 \carlos{Aqui hace falta una grafica que muestra la latencia en funcion del tiempo mientras se ejecuta el fault injection}
+\thomas{Agregado}
 
-\par Se probara la inyección de falla por latencia estudiando el ping inicial (antes del estrés) de un pod de Nginx, luego se estresara al agregarle un ping de 500ms y por ultimo se observara el estado (mientras sucede la falla) para compararlo con el inicial y así demostrar que esta funcionando dicha falla.\\
+\par Es importante medir la latencia especialmente en sistemas donde la inmediatez con la que nos comunicamos con un servidor es vital para la actividad que estamos realizando. Tener una alta latencia dará como resultado un retardo en las comunicaciones por lo cual afectara el rendimiento del sistema.\\
 
-\par Para obtener el indicador del ping en cada estado, se utilizara el comando \\ \verb|ping -c 4 <IP del pod afectado>| desde la maquina virtual que tiene alojado a Kubernetes, dicho comando básicamente enviara cuatro solicitudes de ICMP hacia la IP del pod afectado y luego mostrara las respuesta de cada solicitud en la cual se podrá observar el tiempo que tarda cada paquete en llegar a su destino y regresar (ping en ms).\\
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Ping(promedio)\\
- \hline
- Inicial & 0.055ms\\
- Falla & 500.5ms\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del ping en los estados del experimento de estrés por latencia.}
-\label{tab:tabla42}
-\end{table}
+% \par Se probara la inyección de falla por latencia estudiando el ping inicial (antes del estrés) de un pod de Nginx, luego se estresara al agregarle un ping de 500ms y por ultimo se observara el estado (mientras sucede la falla) para compararlo con el inicial y así demostrar que esta funcionando dicha falla.\\
 
-\vspace{\baselineskip}
-\par Con el resultado se puede observar el aumento de 500ms en el ping en el estado de falla, por lo cual esta funcionando correctamente el estrés por latencia.\\
+\par Para obtener el indicador de latencia en cada estado, se utilizo el comando \\ \verb|ping -c 4 <IP del pod afectado>| desde la maquina virtual que tiene alojado a Kubernetes, dicho comando básicamente envía cuatro solicitudes de ICMP hacia la IP del pod afectado y luego muestra las respuesta de cada solicitud en la cual se puede observar el tiempo que tarda cada paquete en llegar a su destino y regresar (latencia en ms).\\
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & Ping(promedio)\\
+%  \hline
+%  Inicial & 0.055ms\\
+%  Falla & 500.5ms\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del ping en los estados del experimento de estrés por latencia.}
+% \label{tab:tabla42}
+% \end{table}
+
+% \vspace{\baselineskip}
+
+\par En la Figura \ref{fig:ping01} se presenta la variación de la latencia en función del tiempo. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla de latencia. El sistema fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. La figura no muestra ningún tiempo de retardo en la respuesta al estrés en el inicio ni en el final. Una vez estabilizado el estrés la latencia alcanza un valor medio de 500.4ms con una desviación estándar de 0.51. Y una diferencia de 500.35ms sobre el estado sin estrés.\\
+
+\par Con el resultado se puede observar el aumento de 500ms en la latencia en el estado de falla, por lo cual esta funcionando correctamente el estrés por latencia.\\
+
+
+
+ \begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficaspruebas/ping.png}
+	\caption{Gráfica del incremento de latencia en un pod en función del tiempo durante el experimento.}
+	\label{fig:ping01}
+\end{figure}
 
 \subsubsection{Probando el estrés por memoria RAM}
 
 \carlos{Aqui hace falta una grafica que muestre el uso de la memoria principal en funcion del tiempo, en un estado normal}
 \carlos{Aqui hace falta una grafica que muestra el uso de la ram en funcion del tiempo mientras se ejecuta el fault injection}
+\thomas{Agregado}
 
-\par Se probara la inyección de falla estudiando el uso inicial de memoria RAM en mebibyte (antes del estrés) de un pod de Nginx, luego se estresara al agregarle la sobrecarga de memoria RAM y por ultimo se observara el estado (mientras sucede la falla) para compararlo con el inicial y así demostrar que esta funcionando dicha falla.\\
+\par La importancia de medir la memoria RAM radica en que es un componente fundamental para la eficiencia de un sistema computacional, su función principal es almacenar datos e instrucciones para que puedan ser accedidos por otros componentes básicos, de manera que evita que tengan que volver a pasar por el procesador o incluso por la tarjeta gráfica. \\
 
-\par Para obtener el indicador en mebibyte en cada estado, se utilizara el comando \\ \verb|kubctl top pods| desde la maquina virtual que tiene alojado a Kubernetes, dicho comando básicamente permite ver el consumo de recursos de los pods.\\
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Memoria(mebibytes)\\
- \hline
- Inicial & 2\\
- Falla & 2059\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del porcentaje de uso de la memoria RAM en los estados del experimento de estrés por memoria.}
-\label{tab:tabla43}
-\end{table}
+% \par Se probara la inyección de falla estudiando el uso inicial de memoria RAM en mebibyte (antes del estrés) de un pod de Nginx, luego se estresara al agregarle la sobrecarga de memoria RAM y por ultimo se observara el estado (mientras sucede la falla) para compararlo con el inicial y así demostrar que esta funcionando dicha falla.\\
+
+\par Para obtener el indicador en mebibyte en cada estado, se utilizo el comando \\ \verb|kubctl top pods| desde la maquina virtual que tiene alojado a Kubernetes, dicho comando básicamente permite ver el consumo de recursos de los pods.\\
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & Memoria(mebibytes)\\
+%  \hline
+%  Inicial & 2\\
+%  Falla & 2059\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del porcentaje de uso de la memoria RAM en los estados del experimento de estrés por memoria.}
+% \label{tab:tabla43}
+% \end{table}
+
+\par En la Figura \ref{fig:usoram01} se presenta la variación del uso de memoria RAM en función del tiempo. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla de RAM. El sistema fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. La figura muestra un tiempo de retardo en la respuesta al estrés de aproximadamente 30 segundos, tanto al inicio como al final, esto posiblemente, al igual que vimos anteriormente es debido al tiempo de respuesta que toma el servicio de Kubernetes para obtener métricas (metrics-server), cuando va a retornar el snapshot del consumo de recursos del pod. Una vez estabilizado el estrés el uso de la memoria RAM alcanza un valor medio de 2063mi con una desviación estándar no detectable. Y una diferencia de 2060mi sobre el estado sin estrés.\\
+
 
 \vspace{\baselineskip}
 \par Con el resultado se puede observar el aumento sustancial del uso de la memoria RAM, por lo cual esta funcionando correctamente la inyección de fallas.\\
+
+
+
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficaspruebas/usoram.png}
+	\caption{Gráfica del uso de memoria RAM en un pod en función del tiempo durante el experimento.}
+	\label{fig:usoram01}
+\end{figure}
 
 \subsubsection{Probando el estrés por disco}
 
 \carlos{Aqui hace falta una grafica que muestre el uso del disco  funcion del tiempo, en un estado normal}
 \carlos{Aqui hace falta una grafica que muestra el uso del disco en funcion del tiempo mientras se ejecuta el fault injection}
+\thomas{Agregado}
 
-\par Se probara la inyección de falla estudiando el porcentaje de escritura y lectura inicial del disco (antes del estrés) de un pod de Nginx, luego se estresara al agregarle muchas operaciones al disco y por ultimo se observara el estado (mientras sucede la falla) para compararlo con el inicial y así demostrar que esta funcionando dicha falla.\\
+\par Es importante medir el disco ya que el rendimiento de un computador depende en gran medida de él. El tiempo que tarda en arrancar, en apagarse, en iniciarse una aplicación o en transferir un archivo, son parámetros que pueden pasar a medir mucho mas tiempo si el disco duro no esta en un estado óptimo.\\
 
-\par Para obtener el indicador en porcentaje en cada estado, se utilizara el comando \\ \verb+iostat -dxy 2 1 | awk '/sda/{print $NF}'+ desde el pod que se utilizara para la prueba, dicho comando básicamente nos mostrara el porcentaje de escritura y lectura del disco sda.\\
+% \par Se probara la inyección de falla estudiando el porcentaje de escritura y lectura inicial del disco (antes del estrés) de un pod de Nginx, luego se estresara al agregarle muchas operaciones al disco y por ultimo se observara el estado (mientras sucede la falla) para compararlo con el inicial y así demostrar que esta funcionando dicha falla.\\
+
+\par Para obtener el indicador en porcentaje en cada estado, se utilizo el comando \\ \verb+iostat -dxy 2 1 | awk '/sda/{print $NF}'+ desde el pod donde se ejecuto la prueba, dicho comando básicamente nos mostrara el porcentaje de escritura y lectura del disco sda.\\
 
 %-dxy es estadisticas ampliadas (-x) por dispositivos (-d) omitiendo el primer reporte desde el arranque del sistema (y), 2 seg de espera 1 repeticion y mandamos a imprimir la ultima columna de la fila de sda.  
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & E/S Disco(porcentaje)\\
- \hline
- Inicial & 1.00\\
- Falla & 96.80\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del porcentaje de E/S del disco en los estados del experimento de estrés por disco.}
-\label{tab:tabla44}
-\end{table}
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & E/S Disco(porcentaje)\\
+%  \hline
+%  Inicial & 1.00\\
+%  Falla & 96.80\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del porcentaje de E/S del disco en los estados del experimento de estrés por disco.}
+% \label{tab:tabla44}
+% \end{table}
+
+\par En la Figura \ref{fig:usodico01} se presenta la variación del porcentaje de operaciones de entrada y salida del disco en función del tiempo. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla de disco. El sistema fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. A diferencia de las otras fallas anteriormente consideradas (CPU, latencia y RAM), la falla correspondiente a disco no muestra un comportamiento estable durante el tiempo de ejecución del estrés. Ella parece indicar una tendencia lineal con pendiente negativa y expresar un decaimiento en el tiempo del estrés considerado. En esta etapa el porcentaje de uso de disco alcanza un valor medio de 91.24\% con una desviación estándar igual a 9.54. Y una diferencia de 90.24\% sobre el estado sin estrés.\\
+
 
 \par Con el resultado se puede observar el aumento sustancial de las operaciones de escritura y lectura en el disco, por lo cual esta funcionando correctamente la inyección de fallas.\\
 
+ 
 
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficaspruebas/usodisco.png}
+	\caption{Gráfica del porcentaje de uso del disco por un pod en función del tiempo durante el experimento.}
+	\label{fig:usodico01}
+\end{figure}
 
 \section{Evaluacion del sistema de fallas en un entorno de Kubernetes}
 
 \carlos{Cada experimento debe llevar una grafica en funcion del tiempo (duracion del experimento) donde se pueda apreciar el comportamiento habitual y el fallo que estan inyectando}.
+\thomas{Agregado}
 
-\carlos{que criterio estan utilizando para generar ese "trafico", sobrecarga, o latencia?}
+\carlos{que criterio están utilizando para generar ese "trafico", sobrecarga, o latencia?}
+\thomas{solicitudes desde el navegador, el eje Y de cada punto en las gráficas es el tiempo que dura en responder Nginx al navegador}
 
-\par Una vez desarrollado el sistema de inyección de fallas, se realizaron varios experimentos para estudiar el comportamiento de Kubernetes al sufrir fallas. En esta sección se explican los experimentos realizados y se ilustran los resultados obtenidos.\\
+\par Una vez desarrollado el sistema de inyección de fallas, se realizaron varios experimentos para estudiar el comportamiento de Kubernetes al sufrir las fallas consideradas. En esta sección se explican los experimentos realizados y se ilustran los resultados obtenidos.\\
 
-
-\par Se medira objetivamente el desempeño del sistema con el tiempo de solicitud el cual es la duracion total empleada por Nginx para procesar una solicitud y se expresa en segundos. Dicha metrica permitira comparar los resultados obtenidos utilizando distintos casos de prueba.\\
+\label{sec:medicion}
+\par Se midió el desempeño del sistema haciendo uso del tiempo de solicitud el cual es la duración total empleada por Nginx para procesar una solicitud y se expresa en segundos. Dicha métrica permitió comparar los resultados obtenidos utilizando distintos casos de prueba.\\
 
 
 % \par Esta sección se dividirá en dos partes, la primera en la que se estudiara el correcto funcionamiento de las inyecciones de fallas y la segunda parte en la que se observara y analizará el comportamiento de Kubernetes al sufrir fallas en sus pods.\\
@@ -867,15 +981,18 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
 
 % \par En el grupo de experimentos a continuación se busca estudiar el comportamiento de Kubernetes ante fallas.\\ 
 
-\par Se preparo un pod de Nginx que servirá un documento HTML que ocupa 16.8 MB de espacio en disco, a su vez Nginx esta configurado para almacenar los logs de acceso en el cual tendremos la métrica de tiempo de solicitud, dicha variable se estará utilizando para representar el tiempo en segundos que tardo procesar la solicitud y así estudiar el rendimiento durante una falla.\\
+\par Se preparo un pod de Nginx que sirvió un documento HTML que ocupa 16.8 MB de espacio en disco, a su vez Nginx esta configurado para almacenar los logs de acceso en el cual registramos la métrica de tiempo de solicitud, dicha variable se utilizo para representar el tiempo en segundos que tardo procesar la solicitud y así se estudio el rendimiento durante una falla.\\
 
-\par Se creo un servicio de Kubernetes que servirá dos replicas del pod anteriormente descrito con el fin de comprobar si Kubernetes pudo realizar correctamente el balanceo de carga.\\
+\par Se creo un servicio de Kubernetes que sirvió dos replicas del pod anteriormente descrito para comprobar si Kubernetes pedía realizar correctamente el balanceo de carga.\\
 
-\par Cabe destacar que todos los experimentos de esta sección se realizaran en una maquina virtual que utiliza un disco HDD, con dos cores de CPU y 4GB de RAM.\\
+\par Cabe destacar que todos los experimentos de esta sección se realizaron en una maquina virtual que utiliza un disco HDD, con dos cores de CPU y 4GB de RAM.\\
 
-\par Se determino una metrica inicial, sobre los pods de un despliegue, previo a realizar cualquier test o caso, el cual proporciono el siguiente valor promedio del tiempo de solicitud (rt), sobre ambos pods del deployment:
+\par Previo a realizar cualquier test o caso, se determino una metrica inicial sobre los pods, lo cual proporciono el siguiente valor promedio del tiempo de solicitud (rt).
+
 \begin{table}[ht!]
-\begin{center}
+\centering
+\caption{Tiempo de Solicitud inicial.}
+\vspace{0.5\baselineskip}
 \begin{tabular}{ |c|c| } 
  \hline
  \multicolumn{2}{|c|}{Estado inicial} \\
@@ -883,205 +1000,301 @@ Comentarios & \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}Los parámetros nec
  \hline
  Tiempo de Solicitud & Valor Promedio Inicial\\
  \hline
- Request Time (rt) & 0.492 s\\
+ Request Time (rt) & 0.49 s\\
  \hline
 \end{tabular}
-\end{center}
-\caption{Tiempo de Solicitud inicial.}
 \label{tab:tabla406}
 \end{table}
 
 \subsubsection{Caso \#1: Falla de CPU en una replica}
-
+\label{sec:falla_cpu_exp}
 \carlos{como han medido el rendimiento? en funcion del tiempo de respuesta de la aplicacion? que aplicacion está funcionando?}
+\thomas{si, lo estamos midiendo en función del tiempo de respuesta, puede ver una explicación de esto \hyperref[sec:medicion]{AQUI (hacer click)}; el servicio web que esta funcionando se explica \hyperref[sec:servicio_web]{AQUI (hacer click)}}
+
 
 \par Se inyecto la falla de CPU en una replica durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Tiempo de solicitud(segundos)\\
- \hline
- Inicial & 0.492\\
- Falla & 1.300\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#1.}
-\label{tab:tabla45}
-\end{table}
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficasexperimentos/CPU1.png}
+	\caption{Gráfica de variación temporal del tiempo de solicitud del servicio para la falla de CPU en una r\'eplica.}
+	\label{fig:cpu01}
+\end{figure}
+
+\par En la Figura \ref{fig:cpu01} se muestra la variación temporal del tiempo de solicitud del servicio. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla. El servicio fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. Una vez inicializada la falla se mide un aumento en el tiempo de solicitud el cual tiene un valor promedio de 0.87 con una desviación estándar igual a 0.17. Y una diferencia de 0.38 sobre el estado sin estrés.\\
 
 
-\par Se pudo observar que el pod afectado utilizo entre 1500 y 1700 de mCPU durante la falla. También se observ\'o que, Kubernetes logro hacer un balanceo de carga ya que la replica que respondió las solicitudes no fue la que se encontraba afectada con la falla del CPU, sin embargo, se pudo notar un leve aumento en el tiempo de solicitud porque el CPU del nodo en general se vio comprometido con la falla.\\
+\par Se observ\'o que Kubernetes logro hacer un balanceo de carga ya que la replica que respondió las solicitudes no fue la que se encontraba afectada con la falla del CPU, sin embargo, se pudo notar un leve aumento en el tiempo de solicitud porque el CPU del nodo se vio comprometido con la falla.\\
+
+
+
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & Tiempo de solicitud(segundos)\\
+%  \hline
+%  Inicial & 0.492\\
+%  Falla & 1.300\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#1.}
+% \label{tab:tabla45}
+% \end{table}
+
 
 \subsubsection{Caso \#2: Falla de CPU en dos replicas}
 
-\par Se inyecto la falla de CPU en las dos replicas durante 15 minutos, a continuación el resultado en el rendimiento del servicio.\\
+\par Se inyecto la falla de CPU en las dos replicas durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Tiempo de solicitud(segundos)\\
- \hline
- Inicial & 0.492\\
- Falla & 10.037\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#2.}
-\label{tab:tabla46}
-\end{table}
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficasexperimentos/CPU2.png}
+	\caption{Gráfica de variación temporal del tiempo de solicitud del servicio para la falla de CPU en dos r\'eplicas.}
+	\label{fig:cpu02}
+\end{figure}
 
-\par Se pudo observar un aumento considerable del tiempo de solicitud, Kubernetes repartió el total del CPU disponible entre las 2 replicas, cada una con un uso entre 800 y 900 de mCPU (entre 1600 y 1700 total entre ambas) sin embargo esto no resuelve la falla simplemente realizo un balanceo del recurso en el nodo.\\
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & Tiempo de solicitud(segundos)\\
+%  \hline
+%  Inicial & 0.492\\
+%  Falla & 10.037\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#2.}
+% \label{tab:tabla46}
+% \end{table}
+
+\par En la Figura \ref{fig:cpu02} se muestra la variación temporal del tiempo de solicitud del servicio. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla. El servicio fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. Una vez inicializada la falla se mide un aumento en el tiempo de solicitud el cual tiene un valor promedio de 7.76 con una desviación estándar igual a 4.53. Y una diferencia de 7.27 sobre el estado sin estrés.\\
+
+\par El comportamiento de la respuesta del sistema parece mostrar dos etapas: i) una inicial de aumento leve, continuo y sostenido, seguido de una disminución en iguales términos, y ii) otra después de variaciones positivas y negativas abruptas.\\
+
+\par Se pudo observar un aumento considerable del tiempo de solicitud, Kubernetes repartió el total del CPU disponible entre las 2 replicas, cada una con un uso aproximado de 850 mCPU (un total entre ambas de aproximadamente 1650) sin embargo esto no resuelve la falla simplemente realizo un balanceo del recurso en el nodo. Aunque esta falla afecto en promedio mucho mas al rendimiento del servicio que en el caso anterior (en una solo replica), en ambas se puede notar un comportamiento de picos, se tiene la hipótesis que esto es debido a la cola de procesos en el CPU que a veces prioriza al servicio por lo cual los tiempos de solicitud disminuyen abruptamente en ciertos puntos. \\
+
+
 
 \subsubsection{Caso \#3: Falla de disco en una replica}
 
 \par Se inyecto la falla de disco en una replica durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Tiempo de solicitud(segundos)\\
- \hline
- Inicial & 0.492\\
- Falla & 1.900\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#3.}
-\label{tab:tabla47}
-\end{table}
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficasexperimentos/Disco1.png}
+	\caption{Gráfica de variación temporal del tiempo de solicitud del servicio para la falla de disco en una r\'eplica.}
+	\label{fig:disco01}
+\end{figure}
 
-\par Se pudo notar que Kubernetes respondió las solicitudes con ambas replicas (la que poseía la falla y la que no, es decir, no hubo balanceo en esta falla), en ambas replicas se pudo notar un leve aumento en el tiempo de solicitud ya que ambas replicas comparten el mismo disco del nodo, aunque cada una posee su propio volumen y solo era afectado el uso de disco en el pod con falla.\\
+
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & Tiempo de solicitud(segundos)\\
+%  \hline
+%  Inicial & 0.492\\
+%  Falla & 1.900\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#3.}
+% \label{tab:tabla47}
+% \end{table}
+
+\par En la Figura \ref{fig:disco01} se muestra la variación temporal del tiempo de solicitud del servicio. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla. El servicio fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. Una vez inicializada la falla se mide un aumento en el tiempo de solicitud el cual tiene un valor promedio de 3.17 con una desviación estándar igual a 0.42. Y una diferencia de 2.68 sobre el estado sin estrés.\\
+
+\par El comportamiento de la respuesta del sistema parece indicar un aumento lento y sostenido durante los primeros 1.5 minutos de estrés hasta alcanzar una especie de saturación, o sea, un valor algo estable y continuo en el tiempo.\\
+
+\par Se pudo notar que Kubernetes respondió las solicitudes con ambas replicas (la que poseía la falla y la que no, es decir, no hubo balanceo en esta falla), en ambas replicas se pudo notar un leve aumento en el tiempo de solicitud ya que ambas replicas comparten el mismo disco del nodo, cabe destacar que cada pod tiene su propio volumen y solo al volumen de la replica que esta siendo afectada por la falla es el que se encuentra bajo estrés. \\
+
+
 
 \subsubsection{Caso \#4: Falla de disco en dos replicas}
 
-\par Se inyecto la falla de disco en las dos replicas durante 15 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Tiempo de solicitud(segundos)\\
- \hline
- Inicial & 0.492\\
- Falla & 3.700\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#4.}
-\label{tab:tabla48}
-\end{table}
+\par Se inyecto la falla de disco en las dos replicas durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
-\par Se pudo observar un leve aumento (a diferencia de las otras pruebas sobre ambos pods) del tiempo de solicitud, ambas replicas dieron respuesta a las solicitudes, Kubernetes no se pudo recuperar de esta falla durante el tiempo que duro el experimento.\\
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficasexperimentos/Disco2.png}
+	\caption{Gráfica de variación temporal del tiempo de solicitud del servicio para la falla de disco en dos r\'eplicas.}
+	\label{fig:disco02}
+\end{figure}
+
+
+
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & Tiempo de solicitud(segundos)\\
+%  \hline
+%  Inicial & 0.492\\
+%  Falla & 3.700\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#4.}
+% \label{tab:tabla48}
+% \end{table}
+
+\par En la Figura \ref{fig:disco02} se muestra la variación temporal del tiempo de solicitud del servicio. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla. El servicio fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. Una vez inicializada la falla se mide un aumento en el tiempo de solicitud el cual tiene un valor promedio de 3.26 con una desviación estándar igual a 1.76. Y una diferencia de 2.77 sobre el estado sin estrés.\\
+
+\par El comportamiento de la respuesta del sistema parece indicar dos picos abruptos (subidas y bajadas de la respuesta) bien definidas.\\
+
+\par Se pudo observar que el aumento del tiempo de solicitud fue el mas bajo en comparación a las demás pruebas en las que se estresaban ambos pods al mismo tiempo, ambas replicas dieron respuesta a las solicitudes, Kubernetes no se pudo recuperar de esta falla durante el tiempo que duro el experimento.\\
 
 \subsubsection{Caso \#5: Falla por latencia en una replica}
 
-\par Se inyecto la falla por latencia en una replica durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
+\par Se inyecto la falla de latencia con 500ms en una replica durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Tiempo de solicitud(segundos)\\
- \hline
- Inicial & 0.492\\
- Falla & 0.820\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#5.}
-\label{tab:tabla49}
-\end{table}
 
-\par Se pudo observar que Kubernetes logro hacer un balanceo de carga ya que la replica que respondió las solicitudes no fue la que se encontraba con latencia inyectada, dicha replica sin fallas no se vio afectada por el estrés que se le realizo a su replica hermana, no hubo incremento en el tiempo de respuesta del servicio debido al balanceo.\\
+
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficasexperimentos/latencia1.png}
+	\caption{Gráfica de variación temporal del tiempo de solicitud del servicio para la falla de red por incremento de latencia en una r\'eplica.}
+	\label{fig:latencia01}
+\end{figure}
+
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & Tiempo de solicitud(segundos)\\
+%  \hline
+%  Inicial & 0.492\\
+%  Falla & 0.820\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#5.}
+% \label{tab:tabla49}
+% \end{table}
+
+\par En la Figura \ref{fig:latencia01} se muestra la variación temporal del tiempo de solicitud del servicio. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla. El servicio fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. Una vez inicializada la falla se mide un tiempo de solicitud el cual tiene un valor promedio de 0.51 con una desviación estándar igual a 0.03. Y una diferencia de 0.02 sobre el estado sin estrés.\\
+
+\par Se pudo observar que Kubernetes logro hacer un balanceo de carga ya que la replica que respondió las solicitudes no fue la que se encontraba con latencia inyectada, dicha replica sin fallas no se vio afectada por el estrés que se le realizo a su replica hermana, no hubo un incremento significativo en el tiempo de respuesta del servicio debido al balanceo.\\
+
 
 \subsubsection{Caso \#6: Falla por latencia en las dos replicas}
 
-\par Se inyecto la falla por latencia en dos replicas durante 15 minutos, a continuación el resultado en el rendimiento del servicio.\\
+\par Se inyecto la falla de latencia con 500ms en dos replicas durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Tiempo de solicitud(segundos)\\
- \hline
- Inicial & 0.492\\
- Falla & 6.820\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#6.}
-\label{tab:tabla50}
-\end{table}
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficasexperimentos/latencia2.png}
+	\caption{Gráfica de variación temporal del tiempo de solicitud del servicio para la falla de red por incremento de latencia en dos r\'eplicas.}
+	\label{fig:latencia02}
+\end{figure}
+
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+% \hline
+% \multicolumn{2}{|c|}{Resultado} \\
+% \hline
+% \hline
+% Estado & Tiempo de solicitud(segundos)\\
+% \hline
+% Inicial & 0.492\\
+% Falla & 6.820\\
+% \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#6.}
+% \label{tab:tabla50}
+% \end{table}
+
+\par En la Figura \ref{fig:latencia02} se muestra la variación temporal del tiempo de solicitud del servicio. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla. El servicio fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. Una vez inicializada la falla se mide un aumento en el tiempo de solicitud el cual tiene un valor promedio de 9.91 con una desviación estándar igual a 2.73. Y una diferencia de 9.42 sobre el estado sin estrés.\\
+
+\par El comportamiento de la respuesta del sistema parece indicar dos picos (subidas y bajadas de la respuesta) anchos bien definidos. \\
 
 \par Se pudo observar un aumento considerable del tiempo de solicitud, ambas replicas se encontraban afectadas con 500ms de latencia, Kubernetes no se pudo recuperar de esta falla durante el tiempo que duro el experimento.\\
+
 
 \subsubsection{Caso \#7: Falla de memoria RAM en una replica}
 
 \par Se inyecto la falla de memoria RAM en una replica durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Tiempo de solicitud(segundos)\\
- \hline
- Inicial & 0.492\\
- Falla & 1.592\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#7.}
-\label{tab:tabla51}
-\end{table}
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficasexperimentos/RAM1.png}
+	\caption{Gráfica de variación temporal del tiempo de solicitud del servicio para la falla de memoria RAM en una r\'eplica.}
+	\label{fig:ram01}
+\end{figure}
 
-\par Se pudo observar al pod afectado con un mayo de 2100 MiB de memoria. También que Kubernetes logro hacer un balanceo de carga ya que la replica que respondió las solicitudes no fue la que se encontraba con la falla, sin embargo, se pudo notar un leve aumento en el tiempo de solicitud del servicio, porque la memoria del nodo en general se vio comprometido con la falla.//
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & Tiempo de solicitud(segundos)\\
+%  \hline
+%  Inicial & 0.492\\
+%  Falla & 1.592\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#7.}
+% \label{tab:tabla51}
+% \end{table}
+
+\par En la Figura \ref{fig:ram01} se muestra la variación temporal del tiempo de solicitud del servicio. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla. El servicio fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. Una vez inicializada la falla se mide un aumento en el tiempo de solicitud el cual tiene un valor promedio de 1.12 con una desviación estándar igual a 0.20. Y una diferencia de 0.63 sobre el estado sin estrés.\\
+
+\par Se observ\'o que Kubernetes logro hacer un balanceo de carga ya que la replica que respondió las solicitudes no fue la que se encontraba afectada con la falla del CPU, sin embargo, se pudo notar un leve aumento en el tiempo de solicitud porque la memoria RAM del nodo se vio comprometido con la falla.\\
 
 \subsubsection{Caso \#8: Falla de memoria RAM en dos replicas}
 
-\par Se inyecto la falla de memoria RAM en las dos replicas durante 15 minutos, a continuación el resultado en el rendimiento del servicio.\\
+\par Se inyecto la falla de memoria RAM en las dos replicas durante 5 minutos, a continuación el resultado en el rendimiento del servicio.\\
 
-\begin{table}[ht!]
-\begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
- \multicolumn{2}{|c|}{Resultado} \\
- \hline
- \hline
- Estado & Tiempo de solicitud(segundos)\\
- \hline
- Inicial & 0.492\\
- Falla & 4.164\\
- \hline
-\end{tabular}
-\end{center}
-\caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#8.}
-\label{tab:tabla52}
-\end{table}
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{images/graficasexperimentos/RAM2.png}
+	\caption{Gráfica de variación temporal del tiempo de solicitud del servicio para la falla de memoria RAM en dos r\'eplicas.}
+	\label{fig:ram02}
+\end{figure}
 
-\par Se pudo observar un aumento considerable del tiempo de solicitud, ambas replicas poseían entre 1700 y 2000 MiB de memoria en uso cada una, no los 2048 mínimos de la falla (el total de uso entre ambos no supero los 4096 MiB total del nodo), Kubernetes no se pudo recuperar de esta falla durante el tiempo que duro el experimento y se observo notificaciones de procesos encargados de inyectar fallas detro de los pods, siendo eliminados por el sistema operativo del nodo, debido al evento OOM (\textit{Out of Memory}).\\
+% \begin{table}[ht!]
+% \begin{center}
+% \begin{tabular}{ |c|c| } 
+%  \hline
+%  \multicolumn{2}{|c|}{Resultado} \\
+%  \hline
+%  \hline
+%  Estado & Tiempo de solicitud(segundos)\\
+%  \hline
+%  Inicial & 0.492\\
+%  Falla & 4.164\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \caption{Tabla comparativa del tiempo de solicitud en los estados del caso \#8.}
+% \label{tab:tabla52}
+% \end{table}
+
+\par En la Figura \ref{fig:ram02} se muestra la variación temporal del tiempo de solicitud del servicio. Las líneas verticales en rojo muestran los tiempos de lanzamiento y finalización de la falla. El servicio fue monitoreado durante 11 minutos, de ellos 3 minutos corresponden a antes del lanzamiento de la falla y otros 3 minutos después de finalizado el estrés. Una vez inicializada la falla se mide un aumento en el tiempo de solicitud el cual tiene un valor promedio de 6.36 con una desviación estándar igual a 4.21. Y una diferencia de 5.87 sobre el estado sin estrés.\\
+
+\par Se pudo observar un aumento considerable del tiempo de solicitud, cada replica poseía entre 1700 y 2000 MiB de uso de memoria, ninguna de las dos replicas alcanzo los 2048 mínimos de la falla, otro dato a destacar es que el total de uso de memoria entre ambos no supero los 4096 MiB total del nodo, Kubernetes no se pudo recuperar de esta falla durante el tiempo que duro el experimento. A su vez se observaron notificaciones de procesos encargados de inyectar fallas dentro de los pods, informando que dichos procesos estaban siendo eliminados por el sistema operativo del nodo, debido al evento OOM (\textit{Out of Memory}). Aunque esta falla afecto en promedio mucho mas al rendimiento del servicio que en el caso anterior (en una solo replica), en ambas se puede notar un comportamiento de picos, se tiene la hipótesis que esto es debido al los procesos de balanceos de carga del propio sistema operativo y al aprovechamiento del espacio swap, con lo cual a veces se prioriza al servicio y así los tiempos de solicitud disminuyen abruptamente en ciertos puntos. \\
+
